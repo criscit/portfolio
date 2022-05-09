@@ -1,4 +1,3 @@
-
 DROP TABLE IF EXISTS catalogs;
 CREATE TABLE catalogs (
 id SERIAL PRIMARY KEY,
@@ -10,10 +9,6 @@ INSERT iNTO catalogs VALUES
 (NULL, 'Процессоры'),
 (NULL, 'Мат. платы'),
 (DEFAULT, 'Видеокарты');
-
-UPDATE catalogs
-SET name = 'Процессоры (Intel)'
-WHERE name = 'Процессоры';
 
 DROP TABLE IF EXISTS users;
 CREATE TABLE users (
@@ -67,7 +62,7 @@ CREATE TABLE discounts (
 id SERIAL PRIMARY KEY,
 user_id INT UNSIGNED,
 product_id INT UNSIGNED,
-discount FLOAT UNSIGNED COMMENT 'Величина скидки от 0.0 до 1.0',
+discount FLOAT COMMENT 'Величина скидки от 0.0 до 1.0',
 started_at DATETIME,
 finished_at DATETIME,
 created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
@@ -93,3 +88,56 @@ value INT UNSIGNED COMMENT 'Запас товарной позиции на складе',
 created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
 updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) COMMENT = 'Запасы на складе';
+
+DROP TABLE IF EXISTS files_of_users;
+CREATE TABLE files_of_users (
+id SERIAL PRIMARY KEY,
+storehouse_id INT UNSIGNED,
+product_id INT UNSIGNED,
+value INT UNSIGNED COMMENT 'Запас товарной позиции на складе',
+created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) COMMENT = 'Запасы на складе';
+
+DROP TABLE IF EXISTS files_of_users;
+CREATE TABLE files_of_users (
+id SERIAL PRIMARY KEY,
+storehouse_id INT UNSIGNED,
+product_id INT UNSIGNED,
+value INT UNSIGNED COMMENT 'Запас товарной позиции на складе',
+created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) COMMENT = 'Запасы на складе';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
