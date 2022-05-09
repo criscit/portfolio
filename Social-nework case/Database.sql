@@ -1,42 +1,42 @@
 CREATE TABLE users (
 id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-first_name VARCHAR(100) NOT NULL COMMENT 'Имя пользователя',
-last_name VARCHAR(100) NOT NULL COMMENT 'Фамилия пользователя',
-birthday DATE NOT NULL COMMENT 'Дата рождения',
-gender CHAR(1) NOT NULL COMMENT 'Пол',
-email VARCHAR(100) NOT NULL UNIQUE COMMENT 'Email пользователя',
-phone VARCHAR(11) NOT NULL UNIQUE COMMENT 'Телефон пользователя',
-created_at DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Дата и время создания строки',
-updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Дата и время обновления строки'
+first_name VARCHAR(100) NOT NULL COMMENT 'РРјСЏ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ',
+last_name VARCHAR(100) NOT NULL COMMENT 'Р¤Р°РјРёР»РёСЏ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ',
+birthday DATE NOT NULL COMMENT 'Р”Р°С‚Р° СЂРѕР¶РґРµРЅРёСЏ',
+gender CHAR(1) NOT NULL COMMENT 'РџРѕР»',
+email VARCHAR(100) NOT NULL UNIQUE COMMENT 'Email РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ',
+phone VARCHAR(11) NOT NULL UNIQUE COMMENT 'РўРµР»РµС„РѕРЅ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ',
+created_at DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Р”Р°С‚Р° Рё РІСЂРµРјСЏ СЃРѕР·РґР°РЅРёСЏ СЃС‚СЂРѕРєРё',
+updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Р”Р°С‚Р° Рё РІСЂРµРјСЏ РѕР±РЅРѕРІР»РµРЅРёСЏ СЃС‚СЂРѕРєРё'
 -- photo
-) COMMENT 'Таблица пользователей';
+) COMMENT 'РўР°Р±Р»РёС†Р° РїРѕР»СЊР·РѕРІР°С‚РµР»РµР№';
 
 CREATE TABLE profiles (
 user_id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-city VARCHAR(100) COMMENT 'Город проживания',
-country VARCHAR(100) COMMENT 'Страна проживания',
-`status` VARCHAR(10) COMMENT 'Текущий статус',
-created_at DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Дата и время создания строки',
-updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Дата и время обновления строки'
-) COMMENT 'Таблица профилей';
+city VARCHAR(100) COMMENT 'Р“РѕСЂРѕРґ РїСЂРѕР¶РёРІР°РЅРёСЏ',
+country VARCHAR(100) COMMENT 'РЎС‚СЂР°РЅР° РїСЂРѕР¶РёРІР°РЅРёСЏ',
+`status` VARCHAR(10) COMMENT 'РўРµРєСѓС‰РёР№ СЃС‚Р°С‚СѓСЃ',
+created_at DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Р”Р°С‚Р° Рё РІСЂРµРјСЏ СЃРѕР·РґР°РЅРёСЏ СЃС‚СЂРѕРєРё',
+updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Р”Р°С‚Р° Рё РІСЂРµРјСЏ РѕР±РЅРѕРІР»РµРЅРёСЏ СЃС‚СЂРѕРєРё'
+) COMMENT 'РўР°Р±Р»РёС†Р° РїСЂРѕС„РёР»РµР№';
 
 ALTER TABLE profiles ADD CONSTRAINT profiles_user_id FOREIGN KEY (user_id) REFERENCES users(id); 
 
 CREATE TABLE IF NOT EXISTS friendship_request_types (
 id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-name VARCHAR(150) NOT NULL UNIQUE COMMENT 'Название статуса',
-created_at DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Дата и время создания строки',
-updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Дата и время обновления строки'
-) COMMENT 'Типы запроса на дружбу'; 
+name VARCHAR(150) NOT NULL UNIQUE COMMENT 'РќР°Р·РІР°РЅРёРµ СЃС‚Р°С‚СѓСЃР°',
+created_at DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Р”Р°С‚Р° Рё РІСЂРµРјСЏ СЃРѕР·РґР°РЅРёСЏ СЃС‚СЂРѕРєРё',
+updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Р”Р°С‚Р° Рё РІСЂРµРјСЏ РѕР±РЅРѕРІР»РµРЅРёСЏ СЃС‚СЂРѕРєРё'
+) COMMENT 'РўРёРїС‹ Р·Р°РїСЂРѕСЃР° РЅР° РґСЂСѓР¶Р±Сѓ'; 
 
 CREATE TABLE IF NOT EXISTS friendship (
-user_id INT UNSIGNED NOT NULL COMMENT 'Ссылка на инициатора дружеских отношений',
-friend_id INT UNSIGNED NOT NULL COMMENT 'Ссылка на поулчателя запроса о дружбе',
-request_type VARCHAR(10) COMMENT 'Тип запроса',
-requested_at  DATETIME COMMENT 'Дата и время отправки приглашения',
-confirmed_at DATETIME COMMENT 'Дата и время подтверждения приглашения',
-created_at DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Дата и время создания строки',
-updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Дата и время обновления строки',
+user_id INT UNSIGNED NOT NULL COMMENT 'РЎСЃС‹Р»РєР° РЅР° РёРЅРёС†РёР°С‚РѕСЂР° РґСЂСѓР¶РµСЃРєРёС… РѕС‚РЅРѕС€РµРЅРёР№',
+friend_id INT UNSIGNED NOT NULL COMMENT 'РЎСЃС‹Р»РєР° РЅР° РїРѕСѓР»С‡Р°С‚РµР»СЏ Р·Р°РїСЂРѕСЃР° Рѕ РґСЂСѓР¶Р±Рµ',
+request_type VARCHAR(10) COMMENT 'РўРёРї Р·Р°РїСЂРѕСЃР°',
+requested_at  DATETIME COMMENT 'Р”Р°С‚Р° Рё РІСЂРµРјСЏ РѕС‚РїСЂР°РІРєРё РїСЂРёРіР»Р°С€РµРЅРёСЏ',
+confirmed_at DATETIME COMMENT 'Р”Р°С‚Р° Рё РІСЂРµРјСЏ РїРѕРґС‚РІРµСЂР¶РґРµРЅРёСЏ РїСЂРёРіР»Р°С€РµРЅРёСЏ',
+created_at DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Р”Р°С‚Р° Рё РІСЂРµРјСЏ СЃРѕР·РґР°РЅРёСЏ СЃС‚СЂРѕРєРё',
+updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Р”Р°С‚Р° Рё РІСЂРµРјСЏ РѕР±РЅРѕРІР»РµРЅРёСЏ СЃС‚СЂРѕРєРё',
 PRIMARY KEY (user_id, friend_id)
 );
 

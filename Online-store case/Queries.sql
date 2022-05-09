@@ -1,12 +1,12 @@
-/*В учебной базе shop присутствует таблица catalogs. 
-Пусть в базе данных sample имеется таблица cat, 
-в которой могут присутствовать строки с такими же 
-первичными ключами. Напишите запрос, который копирует 
-данные из таблицы catalogs в таблицу cat, при этом 
-для записей с конфликтующими первичными ключами в 
-таблице cat должна производиться замена значениями из таблицы catalogs.*/
+/*Р’ СѓС‡РµР±РЅРѕР№ Р±Р°Р·Рµ shop РїСЂРёСЃСѓС‚СЃС‚РІСѓРµС‚ С‚Р°Р±Р»РёС†Р° catalogs. 
+РџСѓСЃС‚СЊ РІ Р±Р°Р·Рµ РґР°РЅРЅС‹С… sample РёРјРµРµС‚СЃСЏ С‚Р°Р±Р»РёС†Р° cat, 
+РІ РєРѕС‚РѕСЂРѕР№ РјРѕРіСѓС‚ РїСЂРёСЃСѓС‚СЃС‚РІРѕРІР°С‚СЊ СЃС‚СЂРѕРєРё СЃ С‚Р°РєРёРјРё Р¶Рµ 
+РїРµСЂРІРёС‡РЅС‹РјРё РєР»СЋС‡Р°РјРё. РќР°РїРёС€РёС‚Рµ Р·Р°РїСЂРѕСЃ, РєРѕС‚РѕСЂС‹Р№ РєРѕРїРёСЂСѓРµС‚ 
+РґР°РЅРЅС‹Рµ РёР· С‚Р°Р±Р»РёС†С‹ catalogs РІ С‚Р°Р±Р»РёС†Сѓ cat, РїСЂРё СЌС‚РѕРј 
+РґР»СЏ Р·Р°РїРёСЃРµР№ СЃ РєРѕРЅС„Р»РёРєС‚СѓСЋС‰РёРјРё РїРµСЂРІРёС‡РЅС‹РјРё РєР»СЋС‡Р°РјРё РІ 
+С‚Р°Р±Р»РёС†Рµ cat РґРѕР»Р¶РЅР° РїСЂРѕРёР·РІРѕРґРёС‚СЊСЃСЏ Р·Р°РјРµРЅР° Р·РЅР°С‡РµРЅРёСЏРјРё РёР· С‚Р°Р±Р»РёС†С‹ catalogs.*/
 
-/*DROP TABLE IF EXISTS cat;
+DROP TABLE IF EXISTS cat;
 CREATE TABLE cat (
 id SERIAL PRIMARY KEY,
 name VARCHAR(255),
@@ -23,53 +23,53 @@ name = VALUES(name);
 
 SELECT * FROM sample.cat;*/
 
-/*Cпроектируйте базу данных, которая позволяла бы хранить медиа-файлы
-загружаемы пользователем (фото, аудио, фидео). Сами файлы будут
-храниться в файловом хранилище, база данных предназначена для 
-хранения пути к файлу, названия, описания, ключевых слов и 
-принадлежности пользователю.*/
+/*CРїСЂРѕРµРєС‚РёСЂСѓР№С‚Рµ Р±Р°Р·Сѓ РґР°РЅРЅС‹С…, РєРѕС‚РѕСЂР°СЏ РїРѕР·РІРѕР»СЏР»Р° Р±С‹ С…СЂР°РЅРёС‚СЊ РјРµРґРёР°-С„Р°Р№Р»С‹
+Р·Р°РіСЂСѓР¶Р°РµРјС‹ РїРѕР»СЊР·РѕРІР°С‚РµР»РµРј (С„РѕС‚Рѕ, Р°СѓРґРёРѕ, С„РёРґРµРѕ). РЎР°РјРё С„Р°Р№Р»С‹ Р±СѓРґСѓС‚
+С…СЂР°РЅРёС‚СЊСЃСЏ РІ С„Р°Р№Р»РѕРІРѕРј С…СЂР°РЅРёР»РёС‰Рµ, Р±Р°Р·Р° РґР°РЅРЅС‹С… РїСЂРµРґРЅР°Р·РЅР°С‡РµРЅР° РґР»СЏ 
+С…СЂР°РЅРµРЅРёСЏ РїСѓС‚Рё Рє С„Р°Р№Р»Сѓ, РЅР°Р·РІР°РЅРёСЏ, РѕРїРёСЃР°РЅРёСЏ, РєР»СЋС‡РµРІС‹С… СЃР»РѕРІ Рё 
+РїСЂРёРЅР°РґР»РµР¶РЅРѕСЃС‚Рё РїРѕР»СЊР·РѕРІР°С‚РµР»СЋ.*/
 
-/*DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS users;
 CREATE TABLE users (
 id SERIAL PRIMARY KEY,
-name VARCHAR(255) COMMENT 'Имя пользователя',
+name VARCHAR(255) COMMENT 'РРјСЏ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ',
 created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
 updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-) COMMENT = 'Пользователи';
+) COMMENT = 'РџРѕР»СЊР·РѕРІР°С‚РµР»Рё';
 
 DROP TABLE IF EXISTS media_types;
 CREATE TABLE media_types (
 id SERIAL PRIMARY KEY,
-alias VARCHAR(255) COMMENT 'Псеводоним',
-name VARCHAR(255) COMMENT 'Описание медиа-типов: изображение, аудио, видео'
-) COMMENT = 'Типы медиафайлов';
+alias VARCHAR(255) COMMENT 'РџСЃРµРІРѕРґРѕРЅРёРј',
+name VARCHAR(255) COMMENT 'РћРїРёСЃР°РЅРёРµ РјРµРґРёР°-С‚РёРїРѕРІ: РёР·РѕР±СЂР°Р¶РµРЅРёРµ, Р°СѓРґРёРѕ, РІРёРґРµРѕ'
+) COMMENT = 'РўРёРїС‹ РјРµРґРёР°С„Р°Р№Р»РѕРІ';
 
 INSERT INTO media_types VALUES
-(NULL,'image', 'Изображения'),
-(NULL,'audio', 'Аудио-файлы'),
-(NULL,'video', 'Видео');
+(NULL,'image', 'РР·РѕР±СЂР°Р¶РµРЅРёСЏ'),
+(NULL,'audio', 'РђСѓРґРёРѕ-С„Р°Р№Р»С‹'),
+(NULL,'video', 'Р’РёРґРµРѕ');
 
 DROP TABLE IF EXISTS medias;
 CREATE TABLE medias (
 id SERIAL PRIMARY KEY,
 media_type_id INT,
 user_id INT,
-filename VARCHAR(255) COMMENT 'Название файла',
-filesize INT COMMENT 'Размер файла',
+filename VARCHAR(255) COMMENT 'РќР°Р·РІР°РЅРёРµ С„Р°Р№Р»Р°',
+filesize INT COMMENT 'Р Р°Р·РјРµСЂ С„Р°Р№Р»Р°',
 created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
 updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 INDEX index_of_user_id(user_id),
 INDEX index_of_media_type_id(media_type_id)
-) COMMENT = 'Медиафайлы';
+) COMMENT = 'РњРµРґРёР°С„Р°Р№Р»С‹';
 
 DROP TABLE IF EXISTS metadata;
 CREATE TABLE metadata (
 id SERIAL PRIMARY KEY,
 media_type_id INT,
-description TEXT COMMENT 'Описание',
-duration INT COMMENT 'Длительность видео или аудио в секундах',
+description TEXT COMMENT 'РћРїРёСЃР°РЅРёРµ',
+duration INT COMMENT 'Р”Р»РёС‚РµР»СЊРЅРѕСЃС‚СЊ РІРёРґРµРѕ РёР»Рё Р°СѓРґРёРѕ РІ СЃРµРєСѓРЅРґР°С…',
 created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
 updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 INDEX index_of_media_type_id(media_type_id)
-) COMMENT = 'Метаинформация';*/
+) COMMENT = 'РњРµС‚Р°РёРЅС„РѕСЂРјР°С†РёСЏ';
 
