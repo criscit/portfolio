@@ -21,7 +21,7 @@ SELECT * FROM shop.catalogs
 ON DUPLICATE KEY UPDATE
 name = VALUES(name);
 
-SELECT * FROM sample.cat;*/
+SELECT * FROM sample.cat;
 
 /*Cпроектируйте базу данных, которая позволяла бы хранить медиа-файлы
 загружаемы пользователем (фото, аудио, фидео). Сами файлы будут
