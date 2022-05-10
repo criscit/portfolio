@@ -54,7 +54,7 @@ CREATE TABLE medias (
 id SERIAL PRIMARY KEY,
 media_type_id INT,
 user_id INT,
-filename VARCHAR(255) COMMENT 'Название файла',
+filename VARCHAR(255) COMMENT 'Полный путь к файлу вместе с его названием',
 filesize INT COMMENT 'Размер файла',
 created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
 updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
