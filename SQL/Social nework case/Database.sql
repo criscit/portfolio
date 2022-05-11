@@ -51,10 +51,13 @@ ALTER TABLE friendship ADD CONSTRAINT friendship_request_type_id FOREIGN KEY (re
 
 CREATE TABLE IF NOT EXISTS communities (
 id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+admin_id INT UNSIGNED NOT NULL COMMENT 'Админ группы',
 name VARCHAR(150) NOT NULL UNIQUE COMMENT 'Название группы',
 created_at DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Дата и время создания строки',
 updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Дата и время обновления строки'
 ) COMMENT 'Группы'; 
+
+ALTER TABLE communities ADD CONSTRAINT communities_admin_id FOREIGN KEY (admin_id) REFERENCES users(id); 
 
 CREATE TABLE IF NOT EXISTS communitiies_users (
 user_id INT UNSIGNED NOT NULL,
@@ -86,18 +89,19 @@ id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
 name VARCHAR(150) NOT NULL UNIQUE COMMENT 'Название типа',
 created_at DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Дата и время создания строки',
 updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Дата и время обновления строки'
-) COMMENT 'Типы медиафайлов'; 
+) COMMENT 'Типы медиафайлов';
 
 CREATE TABLE IF NOT EXISTS media (
 id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
 filename VARCHAR(255) NOT NULL COMMENT 'Полный путь к файлу вместе с его названием',
 media_type_id INT UNSIGNED NOT NULL COMMENT 'Ссылка на тип медиафайла',
 user_id INT UNSIGNED NOT NULL COMMENT 'Ссылка на пользователя',
-metadata JSON NOT NULL COMMENT 'Метаданные',
+-- metadata JSON NOT NULL COMMENT 'Метаданные',
 created_at DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Дата и время создания строки',
 updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Дата и время обновления строки'
 ) COMMENT 'Медиафайлы';
 
+ALTER TABLE media ADD COLUMN metadata JSON COMMENT 'Метаданные';
 ALTER TABLE media ADD CONSTRAINT media_media_type_id FOREIGN KEY (media_type_id) REFERENCES media_types(id);
 ALTER TABLE media ADD CONSTRAINT media_user_id FOREIGN KEY (user_id) REFERENCES users(id);
 
@@ -116,3 +120,60 @@ UPDATE media
 SET metadata = CONCAT('{"size" : ', FLOOR(1 + RAND()*1000000),', "extension" : "png", "resolution" : "', CONCAT_WS('x', FLOOR(100 + RAND()*600), FLOOR(700 + RAND()*1300)), '"}'),
 filename = CONCAT_WS('.', filename, metadata->"$.extension")
 WHERE media_type_id = 2;
+
+CREATE TABLE IF NOT EXISTS posts (
+id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+user_id INT UNSIGNED NOT NULL COMMENT 'Ссылка на пользователя',
+name VARCHAR(100) NOT NULL COMMENT 'Название поста',
+description TEXT COMMENT 'Описание поста',
+is_any_media BOOLEAN COMMENT 'Признак присутсвия медиафайлов',
+is_from_community BOOLEAN COMMENT 'Признак постов в сообществах',
+created_at DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Дата и время создания строки',
+updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Дата и время обновления строки'
+) COMMENT 'Посты';
+
+ALTER TABLE posts ADD CONSTRAINT posts_user_id FOREIGN KEY (user_id) REFERENCES users(id);
+
+CREATE TABLE IF NOT EXISTS posts_media (
+id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+post_id INT UNSIGNED NOT NULL COMMENT 'Ссылка на пост',
+media_id INT UNSIGNED NOT NULL COMMENT 'Ссылка на медиафайл',
+created_at DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Дата и время создания строки',
+updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Дата и время обновления строки'
+) COMMENT 'Медиафайлы из постов';
+
+ALTER TABLE posts_media ADD CONSTRAINT posts_media_post_id FOREIGN KEY (post_id) REFERENCES posts(id);
+ALTER TABLE posts_media ADD CONSTRAINT posts_media_media_id FOREIGN KEY (media_id) REFERENCES media(id);
+
+CREATE TABLE IF NOT EXISTS like_to_user (
+from_user_id INT UNSIGNED NOT NULL COMMENT 'Пользователь, который поставил лайк',
+to_user_id INT UNSIGNED NOT NULL COMMENT 'Пользователь, который получил лайк',
+created_at DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Дата и время создания строки',
+updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Дата и время обновления строки',
+PRIMARY KEY (from_user_id, to_user_id)
+) COMMENT 'Лайки пользователям';
+
+ALTER TABLE like_to_user ADD CONSTRAINT like_from_user_id FOREIGN KEY (from_user_id) REFERENCES users(id); 
+ALTER TABLE like_to_user ADD CONSTRAINT like_to_user_id FOREIGN KEY (to_user_id) REFERENCES users(id); 
+
+CREATE TABLE IF NOT EXISTS like_to_media (
+from_user_id INT UNSIGNED NOT NULL COMMENT 'Пользователь, который поставил лайк',
+media_id INT UNSIGNED NOT NULL COMMENT 'Медиафайл, который понравился',
+created_at DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Дата и время создания строки',
+updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Дата и время обновления строки',
+PRIMARY KEY (from_user_id, media_id)
+) COMMENT 'Лайки медиафайлам';
+
+ALTER TABLE like_to_media ADD CONSTRAINT like_from_user_id_to_media FOREIGN KEY (from_user_id) REFERENCES users(id); 
+ALTER TABLE like_to_media ADD CONSTRAINT like_to_media_id FOREIGN KEY (media_id) REFERENCES media(id); 
+
+CREATE TABLE IF NOT EXISTS like_to_post (
+from_user_id INT UNSIGNED NOT NULL COMMENT 'Пользователь, который поставил лайк',
+post_id INT UNSIGNED NOT NULL COMMENT 'Пост, который понравился',
+created_at DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Дата и время создания строки',
+updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Дата и время обновления строки',
+PRIMARY KEY (from_user_id, post_id)
+) COMMENT 'Лайки постам';
+
+ALTER TABLE like_to_post ADD CONSTRAINT like_from_user_id_to_post FOREIGN KEY (from_user_id) REFERENCES users(id); 
+ALTER TABLE like_to_post ADD CONSTRAINT like_to_post_id FOREIGN KEY (post_id) REFERENCES posts(id); 

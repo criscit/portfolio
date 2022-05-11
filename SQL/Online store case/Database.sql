@@ -1,3 +1,12 @@
+DROP TABLE IF EXISTS users;
+CREATE TABLE users (
+id SERIAL PRIMARY KEY,
+name VARCHAR(255) COMMENT 'Имя покупателя',
+birthday_at DATE COMMENT 'Дата рождения',
+created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) COMMENT = 'Покупатели';
+
 DROP TABLE IF EXISTS catalogs;
 CREATE TABLE catalogs (
 id SERIAL PRIMARY KEY,
@@ -8,19 +17,11 @@ UNIQUE unique_name(name(10))
 INSERT iNTO catalogs VALUES 
 (NULL, 'Процессоры'),
 (NULL, 'Мат. платы'),
+(NULL, 'Вентиляторы'),
+(NULL, 'Батареи'),
 (DEFAULT, 'Видеокарты');
 
-DROP TABLE IF EXISTS users;
-CREATE TABLE users (
-id SERIAL PRIMARY KEY,
-name VARCHAR(255) COMMENT 'Имя покупателя',
-birthday_at DATE COMMENT 'Дата рождения',
-created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-) COMMENT = 'Покупатели';
-
--- INSERT iNTO users (id, name, birthday_at) VALUES (1, 'hello', '1979-01-27');
--- SELECT * FROM users;
+SELECT * FROM catalogs ORDER BY FIELD(id, 5, 1, 2);
 
 DROP TABLE IF EXISTS products;
 CREATE TABLE products (
