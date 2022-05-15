@@ -200,9 +200,9 @@ INSERT INTO `profiles` (`user_id`, `city`, `country`, `status`, `created_at`, `u
 INSERT INTO `profiles` (`user_id`, `city`, `country`, `status`, `created_at`, `updated_at`) VALUES (99, 'East Tyrique', '4', 'Offline', '1971-06-11 19:30:24', '2006-02-08 02:42:12');
 INSERT INTO `profiles` (`user_id`, `city`, `country`, `status`, `created_at`, `updated_at`) VALUES (100, 'Langview', '94', 'Inactive', '2011-06-05 17:36:39', '1996-01-02 22:23:00');
 
-INSERT INTO `friendship_request_types` (`id`, `name`, `created_at`, `updated_at`) VALUES (1, 'nisi', '1989-10-04 15:29:52', '2021-03-22 11:22:39');
-INSERT INTO `friendship_request_types` (`id`, `name`, `created_at`, `updated_at`) VALUES (2, 'recusandae', '2004-11-27 15:28:13', '1987-05-30 23:35:31');
-INSERT INTO `friendship_request_types` (`id`, `name`, `created_at`, `updated_at`) VALUES (3, 'ut', '1971-11-12 09:51:27', '2014-11-16 01:29:55');
+INSERT INTO `friendship_request_types` (`id`, `name`, `created_at`, `updated_at`) VALUES (1, 'Друзья', '1989-10-04 15:29:52', '2021-03-22 11:22:39');
+INSERT INTO `friendship_request_types` (`id`, `name`, `created_at`, `updated_at`) VALUES (2, 'Полписка', '2004-11-27 15:28:13', '1987-05-30 23:35:31');
+INSERT INTO `friendship_request_types` (`id`, `name`, `created_at`, `updated_at`) VALUES (3, 'Блокировка', '1971-11-12 09:51:27', '2014-11-16 01:29:55');
 
 INSERT INTO `friendship` (`user_id`, `friend_id`, `request_type_id`, `requested_at`, `confirmed_at`, `created_at`, `updated_at`) VALUES (1, 1, 1, '1990-08-13 03:12:07', '2005-10-17 02:06:14', '1990-09-02 20:10:23', '1999-09-09 21:10:02');
 INSERT INTO `friendship` (`user_id`, `friend_id`, `request_type_id`, `requested_at`, `confirmed_at`, `created_at`, `updated_at`) VALUES (2, 2, 2, '1980-09-24 01:24:17', '2010-08-15 07:57:36', '2015-08-27 13:21:54', '2000-07-12 23:33:22');
@@ -304,6 +304,11 @@ INSERT INTO `friendship` (`user_id`, `friend_id`, `request_type_id`, `requested_
 INSERT INTO `friendship` (`user_id`, `friend_id`, `request_type_id`, `requested_at`, `confirmed_at`, `created_at`, `updated_at`) VALUES (98, 98, 2, '2004-06-23 19:46:16', '1981-09-10 23:32:41', '2007-07-28 21:16:25', '1994-09-20 07:29:47');
 INSERT INTO `friendship` (`user_id`, `friend_id`, `request_type_id`, `requested_at`, `confirmed_at`, `created_at`, `updated_at`) VALUES (99, 99, 3, '1995-07-21 20:10:41', '1975-09-30 20:51:55', '1976-07-10 14:11:12', '2003-11-04 16:39:39');
 INSERT INTO `friendship` (`user_id`, `friend_id`, `request_type_id`, `requested_at`, `confirmed_at`, `created_at`, `updated_at`) VALUES (100, 100, 1, '1990-04-25 23:48:09', '1984-08-18 14:24:19', '1984-05-03 21:56:40', '2014-07-24 11:17:57');
+
+UPDATE friendship SET
+user_id = FLOOR(1 + RAND()*99.99),
+friend_id = FLOOR(1 + RAND()*99.99)
+WHERE request_type_id > 0;
 
 INSERT INTO `communities` (`id`, `admin_id`, `name`, `created_at`, `updated_at`) VALUES (1, 1, 'autem', '1997-07-14 21:11:23', '1972-11-29 10:44:27');
 INSERT INTO `communities` (`id`, `admin_id`, `name`, `created_at`, `updated_at`) VALUES (2, 2, 'accusantium', '2003-08-04 14:30:08', '1985-10-16 23:56:52');
@@ -1039,6 +1044,10 @@ INSERT INTO `like_to_user` (`from_user_id`, `to_user_id`, `created_at`, `updated
 INSERT INTO `like_to_user` (`from_user_id`, `to_user_id`, `created_at`, `updated_at`) VALUES (98, 98, '1988-12-14 15:45:25', '1974-02-11 03:25:40');
 INSERT INTO `like_to_user` (`from_user_id`, `to_user_id`, `created_at`, `updated_at`) VALUES (99, 99, '1973-01-22 14:32:16', '2021-01-26 13:53:57');
 INSERT INTO `like_to_user` (`from_user_id`, `to_user_id`, `created_at`, `updated_at`) VALUES (100, 100, '1988-09-16 08:50:50', '2004-06-26 17:11:16');
+
+UPDATE like_to_user SET
+to_user_id = FLOOR(1 + RAND()*99.99)
+WHERE from_user_id > 0;
 
 INSERT INTO `like_to_media` (`from_user_id`, `media_id`, `created_at`, `updated_at`) VALUES (1, 1, '1997-06-29 19:23:57', '2013-04-16 09:26:19');
 INSERT INTO `like_to_media` (`from_user_id`, `media_id`, `created_at`, `updated_at`) VALUES (2, 2, '1992-04-01 20:25:58', '1997-12-27 06:26:12');

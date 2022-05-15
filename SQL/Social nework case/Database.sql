@@ -135,11 +135,11 @@ updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMEN
 ALTER TABLE posts ADD CONSTRAINT posts_user_id FOREIGN KEY (user_id) REFERENCES users(id);
 
 CREATE TABLE IF NOT EXISTS posts_media (
-id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
 post_id INT UNSIGNED NOT NULL COMMENT 'Ссылка на пост',
 media_id INT UNSIGNED NOT NULL COMMENT 'Ссылка на медиафайл',
 created_at DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Дата и время создания строки',
-updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Дата и время обновления строки'
+updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Дата и время обновления строки',
+PRIMARY KEY (post_id, media_id)
 ) COMMENT 'Медиафайлы из постов';
 
 ALTER TABLE posts_media ADD CONSTRAINT posts_media_post_id FOREIGN KEY (post_id) REFERENCES posts(id);
