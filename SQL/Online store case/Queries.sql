@@ -1,3 +1,21 @@
+/*Пусть имеется таблица рейсов flights (id, from, to) и таблица городов cities (label,
+name). Поля from, to и label содержат английские названия городов, поле name — русское.
+Выведите список рейсов flights с русскими названиями городов.*/
+
+SELECT id, cities_from.name, cities_to.name FROM flights
+LEFT JOIN cities AS cities_from
+ON flights.is_from = cities_from.label
+LEFT JOIN cities AS cities_to
+ON flights.is_to = cities_to.label
+ORDER BY id;
+
+/*ИЛИ*/
+
+SELECT id,
+(SELECT name FROM cities WHERE label = flights.is_from) AS `FROM`,
+(SELECT name FROM cities WHERE label = flights.is_to) AS `TO`
+FROM flights;
+
 /*Подсчитайте произведение чисел в столбце таблицы.*/
 
 SELECT ROUND(EXP(SUM(LN(id)))) FROM media_types;

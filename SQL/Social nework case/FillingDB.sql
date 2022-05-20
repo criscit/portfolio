@@ -1150,6 +1150,10 @@ INSERT INTO `like_to_media` (`from_user_id`, `media_id`, `created_at`, `updated_
 INSERT INTO `like_to_media` (`from_user_id`, `media_id`, `created_at`, `updated_at`) VALUES (99, 99, '2006-05-28 07:30:04', '2004-11-13 00:27:14');
 INSERT INTO `like_to_media` (`from_user_id`, `media_id`, `created_at`, `updated_at`) VALUES (100, 100, '2009-04-23 10:27:21', '1998-04-20 06:46:28');
 
+UPDATE like_to_media SET
+from_user_id = FLOOR(1 + RAND()*99.99)
+WHERE media_id > 0;
+
 INSERT INTO `like_to_post` (`from_user_id`, `post_id`, `created_at`, `updated_at`) VALUES (1, 1, '2008-10-09 13:42:49', '1986-09-02 06:19:24');
 INSERT INTO `like_to_post` (`from_user_id`, `post_id`, `created_at`, `updated_at`) VALUES (2, 2, '2021-05-16 18:16:41', '1989-01-23 09:29:16');
 INSERT INTO `like_to_post` (`from_user_id`, `post_id`, `created_at`, `updated_at`) VALUES (3, 3, '1980-06-17 23:09:57', '1983-11-24 13:47:18');
@@ -1250,3 +1254,7 @@ INSERT INTO `like_to_post` (`from_user_id`, `post_id`, `created_at`, `updated_at
 INSERT INTO `like_to_post` (`from_user_id`, `post_id`, `created_at`, `updated_at`) VALUES (98, 98, '1970-05-23 22:01:09', '1980-04-09 05:21:10');
 INSERT INTO `like_to_post` (`from_user_id`, `post_id`, `created_at`, `updated_at`) VALUES (99, 99, '1980-09-02 11:30:04', '2013-03-05 17:16:02');
 INSERT INTO `like_to_post` (`from_user_id`, `post_id`, `created_at`, `updated_at`) VALUES (100, 100, '1995-08-24 05:07:06', '2017-01-27 11:24:04');
+
+UPDATE like_to_post SET
+from_user_id = FLOOR(1 + RAND()*99.99)
+WHERE post_id > 0;
