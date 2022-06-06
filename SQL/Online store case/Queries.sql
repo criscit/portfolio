@@ -1,3 +1,147 @@
+/*Напишите хранимую функцию для вычисления произвольного числа Фибоначчи.
+Числами Фибоначчи называется последовательность в которой число равно сумме двух
+предыдущих чисел. Вызов функции FIBONACCI(10) должен возвращать число 55.*/
+
+/*1-ый способо, рекурсивная функция*/
+
+CREATE FUNCTION FIBONACCI (ordinal INT) 
+RETURNS INT DETERMINISTIC BEGIN 
+IF ordinal <= 0 THEN RETURN 0;
+ELSEIF ordinal = 1 or ordinal=2 THEN RETURN 1;
+ELSE RETURN FIBONACCI(ordinal - 1) + FIBONACCI(ordinal - 2);
+END IF; END//
+
+/*2-ой способ аналитическая формула*/
+
+CREATE FUNCTION FIBONACCI (ordinal INT) 
+RETURNS INT DETERMINISTIC BEGIN 
+DECLARE fs DOUBLE; 
+SET fs = SQRT(5);
+RETURN (POW((1+fs)/2.0,ordinal)-POW((1-fs)/2.0,ordinal))/fs;
+END//
+
+/*3-ий способ*/
+
+CREATE FUNCTION FIBONACCI (ordinal INT) 
+RETURNS INT DETERMINISTIC BEGIN 
+DECLARE i, fibo, first, second INT; 
+CASE 
+WHEN ordinal=0 or ordinal=1 THEN SET fibo = ordinal; 
+WHEN ordinal >= 2 AND ordinal<=100 THEN SET first = 0; 
+SET second =1; SET i=0; 
+while i < ordinal - 1 DO 
+SET fibo = second + first; 
+SET first = second;
+SET second = fibo; 
+SET i = i+1;
+END WHILE;
+ELSE 
+SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Number shuold be from 0 to 100';
+END CASE; RETURN fibo; END//
+
+/*В таблице products есть два текстовых поля: name с названием товара и description с его
+описанием. Допустимо присутствие обоих полей или одно из них. Ситуация, когда оба поля
+принимают неопределенное значение NULL неприемлема. Используя триггеры, добейтесь
+того, чтобы одно из этих полей или оба поля были заполнены. При попытке присвоить полям
+NULL-значение необходимо отменить операцию.*/
+
+CREATE TRIGGER upd_prod BEFORE UPDATE ON products 
+FOR EACH ROW 
+BEGIN 
+IF NEW.name IS NULL AND NEW.description IS NULL 
+THEN SIGNAL SQLSTATE '45000' 
+SET MESSAGE_TEXT = 'Both name and description are NULL'; 
+END IF; END//
+CREATE TRIGGER ins_prod BEFORE INSERT ON products 
+FOR EACH ROW 
+BEGIN 
+IF NEW.name IS NULL AND NEW.description IS NULL
+THEN SIGNAL SQLSTATE '45000' 
+SET MESSAGE_TEXT = 'Both name and description are NULL'; 
+END IF; END//
+
+/*Создайте хранимую функцию hello(), которая будет возвращать приветствие, в зависимости от
+текущего времени суток. С 6:00 до 12:00 функция должна возвращать фразу "Доброе утро", с
+12:00 до 18:00 функция должна возвращать фразу "Добрый день", с 18:00 до 00:00 — "Добрый
+вечер", с 00:00 до 6:00 — "Доброй ночи".*/
+
+CREATE FUNCTION hello () RETURNS TINYTEXT NOT DETERMINISTIC BEGIN DECLARE hour INT;
+SET hour = HOUR(NOW()); 
+CASE 
+WHEN hour BETWEEN 0 AND 5 THEN RETURN 'Доброй ночи';
+WHEN hour BETWEEN 6 AND 11 THEN RETURN 'Доброе утро';
+WHEN hour BETWEEN 12 AND 17 THEN RETURN 'Добрый день';
+WHEN hour BETWEEN 18 AND 23 THEN RETURN 'Доброй вечер';
+END CASE; END//
+
+/*Пусть имеется таблица accounts содержащая три столбца id, name, password,
+содержащие первичный ключ, имя пользователя и его пароль. Создайте представление
+username таблицы accounts, предоставляющий доступ к столбца id и name. Создайте
+пользователя user_read, который бы не имел доступа к таблице accounts, однако, мог бы
+извлекать записи из представления username.*/
+
+CREATE USER 'user_read'@'localhost' IDENTIFIED BY 'password';
+GRANT SELECT (id, name) ON shop.view1 TO 'user_read'@'localhost';
+DROP user 'user_read'@'localhost';
+
+/*Создайте двух пользователей которые имеют доступ к базе данных shop. Первому
+пользователю shop_read должны быть доступны только запросы на чтение данных, второму
+пользователю shop — любые операции в пределах базы данных shop.*/
+
+CREATE USER 'shop_read'@'localhost';
+GRANT SELECT, SHOW VIEW ON shop.* TO 'shop_read'@'localhost';
+CREATE USER 'shop'@'localhost' IDENTIFIED BY 'password';
+GRANT ALL ON shop.* TO 'shop'@'localhost';
+
+
+/*Пусть имеется любая таблица с календарным полем created_at. Создайте
+запрос, который удаляет устаревшие записи из таблицы, оставляя только 5 самых свежих
+записей.*/
+
+DELETE users FROM users 
+JOIN (SELECT created_at FROM users ORDER BY created_at DESC LIMIT 5, 1) AS deluser 
+ON users.created_at <= deluser.created_at;
+
+/*2-ой способ*/
+
+START TRANSACTION;
+PREPARE userdel FROM 'DELETE FROM users ORDER BY created_at LIMIT ?';
+SET @total := (SELECT COUNT(*) FROM users) - 5;
+EXECUTE userdel USING @total;
+COMMIT;
+
+/*Пусть имеется таблица с календарным полем created_at. В ней размещены
+разряженые календарные записи за август 2018 года '2018-08-01', '2016-08-04', '2018-08-16' и
+2018-08-17. Составьте запрос, который выводит полный список дат за август, выставляя в
+соседнем поле значение 1, если дата присутствует в исходном таблице и 0, если она
+отсутствует.*/
+
+SELECT time_period.selected_date AS date, IF (time_period.selected_date = ANY (SELECT DATE(created_at) FROM vk.users), 1, 0) AS appearance FROM
+(SELECT v.* FROM 
+  (SELECT ADDDATE('2018-08-01',t1.i*10 + t0.i) selected_date FROM
+   (SELECT 0 i UNION SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5 UNION SELECT 6 UNION SELECT 7 UNION SELECT 8 UNION SELECT 9) t0,
+   (SELECT 0 i UNION SELECT 1 UNION SELECT 2 UNION SELECT 3) t1) v
+  WHERE selected_date BETWEEN '2018-08-01' AND '2018-08-31') AS time_period ORDER BY date;
+
+/*Создайте представление, которое выводит название name товарной позиции из таблицы
+products и соответствующее название каталога name из таблицы catalogs.*/
+
+CREATE OR REPLACE VIEW prod_cat AS 
+SELECT p.name product, c.name catalog FROM products p
+JOIN catalogs c 
+ON p.catalog_id = c.id;
+
+/*В базе данных shop и sample присутствуют одни и те же таблицы, учебной базы данных.
+Переместите запись id = 1 из таблицы shop.users в таблицу sample.users. Используйте
+транзакции.*/
+
+START TRANSACTION;
+INSERT INTO example.users
+SELECT id, name, created_at, updated_at 
+FROM shop.users WHERE shop.users.id=1;
+DELETE FROM shop.users WHERE id = 1;
+COMMIT;
+
 /*Пусть имеется таблица рейсов flights (id, from, to) и таблица городов cities (label,
 name). Поля from, to и label содержат английские названия городов, поле name — русское.
 Выведите список рейсов flights с русскими названиями городов.*/
