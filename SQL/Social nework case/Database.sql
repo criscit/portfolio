@@ -1,3 +1,4 @@
+
 CREATE TABLE users (
 id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
 first_name VARCHAR(100) NOT NULL COMMENT 'Имя пользователя',
@@ -10,7 +11,7 @@ created_at DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Дата и время с
 updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Дата и время обновления строки'
 ) COMMENT 'Таблица пользователей';
 
--- UPDATE users.phone SET phone = CONCAT('+7', 9000000000 + FLOOR(999999999 * RAND())) WHERE id > 0;
+-- UPDATE users SET phone = CONCAT('+7', 9000000000 + FLOOR(999999999 * RAND())) WHERE id > 0;
 
 ALTER TABLE users MODIFY gender ENUM('M', 'F') NOT NULL COMMENT 'Пол';
 
@@ -104,22 +105,6 @@ updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMEN
 ALTER TABLE media ADD COLUMN metadata JSON COMMENT 'Метаданные';
 ALTER TABLE media ADD CONSTRAINT media_media_type_id FOREIGN KEY (media_type_id) REFERENCES media_types(id);
 ALTER TABLE media ADD CONSTRAINT media_user_id FOREIGN KEY (user_id) REFERENCES users(id);
-
-INSERT INTO media (filename, media_type_id, user_id, metadata) VALUES(
-CONCAT('https://www.some_server.com/some_directory/', SUBSTR(MD5(RAND()),1,10)), 
-FLOOR(1 + RAND()*4.99),
-FLOOR(1 + RAND()*99.99),
-'{}');
-
-UPDATE media
-SET metadata = CONCAT('{"size" : ', FLOOR(1 + RAND()*1000000),', "extension" : "wav", "duration" : ', FLOOR(1 + RAND()*10000),'}'),
-filename = CONCAT_WS('.', filename, metadata->"$.extension")
-WHERE media_type_id = 1;
-
-UPDATE media 
-SET metadata = CONCAT('{"size" : ', FLOOR(1 + RAND()*1000000),', "extension" : "png", "resolution" : "', CONCAT_WS('x', FLOOR(100 + RAND()*600), FLOOR(700 + RAND()*1300)), '"}'),
-filename = CONCAT_WS('.', filename, metadata->"$.extension")
-WHERE media_type_id = 2;
 
 CREATE TABLE IF NOT EXISTS posts (
 id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,

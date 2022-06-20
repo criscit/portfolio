@@ -729,9 +729,21 @@ INSERT INTO `media` (`id`, `filename`, `media_type_id`, `user_id`, `created_at`,
 INSERT INTO `media` (`id`, `filename`, `media_type_id`, `user_id`, `created_at`, `updated_at`) VALUES (99, 'fuga', 4, 99, '1972-11-28 07:24:50', '1999-04-27 20:49:25');
 INSERT INTO `media` (`id`, `filename`, `media_type_id`, `user_id`, `created_at`, `updated_at`) VALUES (100, 'eius', 5, 100, '1974-05-28 00:48:42', '1979-04-27 11:52:31');
 
-UPDATE media SET
+UPDATE media SET 
+filename = CONCAT('https://www.some_server.com/some_directory/', SUBSTR(MD5(RAND()),1,10)),
+media_type_id = FLOOR(1 + RAND()*4.99), 
 user_id = FLOOR(1 + RAND()*99.99)
 WHERE id > 0;
+
+UPDATE media
+SET metadata = CONCAT('{"size" : ', FLOOR(1 + RAND()*1000000),', "extension" : "wav", "duration" : ', FLOOR(1 + RAND()*10000),'}'),
+filename = CONCAT_WS('.', filename, metadata->"$.extension")
+WHERE media_type_id = 1;
+
+UPDATE media 
+SET metadata = CONCAT('{"size" : ', FLOOR(1 + RAND()*1000000),', "extension" : "png", "resolution" : "', CONCAT_WS('x', FLOOR(100 + RAND()*600), FLOOR(700 + RAND()*1300)), '"}'),
+filename = CONCAT_WS('.', filename, metadata->"$.extension")
+WHERE media_type_id = 2;
 
 INSERT INTO `posts` (`id`, `user_id`, `name`, `description`, `is_any_media`, `is_from_community`, `created_at`, `updated_at`) VALUES (1, 1, 'doloremque', 'Nobis quidem alias enim a ut nesciunt earum. Et vel nulla sed. Autem impedit dolorem est optio id.', 0, 1, '1977-04-10 05:10:24', '1984-06-07 07:34:53');
 INSERT INTO `posts` (`id`, `user_id`, `name`, `description`, `is_any_media`, `is_from_community`, `created_at`, `updated_at`) VALUES (2, 2, 'dignissimos', 'Facere adipisci asperiores fugiat et aliquid. Mollitia incidunt error omnis et et aut. Laudantium consectetur quae aut eum aspernatur. Quia quasi sint dolorem accusantium expedita ut.', 1, 1, '2007-12-23 09:56:21', '1988-08-19 02:43:47');
@@ -838,111 +850,111 @@ UPDATE posts SET
 user_id = FLOOR(1 + RAND()*99.99)
 WHERE id > 0;
 
-INSERT INTO `posts_media` (`id`, `post_id`, `media_id`, `created_at`, `updated_at`) VALUES (1, 1, 1, '1996-09-14 09:26:09', '2020-02-02 15:15:58');
-INSERT INTO `posts_media` (`id`, `post_id`, `media_id`, `created_at`, `updated_at`) VALUES (2, 2, 2, '1977-06-10 12:43:16', '1991-04-13 22:04:20');
-INSERT INTO `posts_media` (`id`, `post_id`, `media_id`, `created_at`, `updated_at`) VALUES (3, 3, 3, '1993-11-24 23:09:24', '1974-05-14 14:01:42');
-INSERT INTO `posts_media` (`id`, `post_id`, `media_id`, `created_at`, `updated_at`) VALUES (4, 4, 4, '2016-08-17 20:56:34', '1971-03-24 13:10:45');
-INSERT INTO `posts_media` (`id`, `post_id`, `media_id`, `created_at`, `updated_at`) VALUES (5, 5, 5, '2015-10-14 04:43:13', '2009-03-25 01:32:17');
-INSERT INTO `posts_media` (`id`, `post_id`, `media_id`, `created_at`, `updated_at`) VALUES (6, 6, 6, '1993-09-04 09:14:32', '1972-11-16 14:56:30');
-INSERT INTO `posts_media` (`id`, `post_id`, `media_id`, `created_at`, `updated_at`) VALUES (7, 7, 7, '2019-05-20 15:45:10', '2011-10-26 22:19:01');
-INSERT INTO `posts_media` (`id`, `post_id`, `media_id`, `created_at`, `updated_at`) VALUES (8, 8, 8, '2018-02-12 22:09:34', '1998-09-29 03:37:03');
-INSERT INTO `posts_media` (`id`, `post_id`, `media_id`, `created_at`, `updated_at`) VALUES (9, 9, 9, '1984-03-12 18:50:50', '2001-02-12 07:06:50');
-INSERT INTO `posts_media` (`id`, `post_id`, `media_id`, `created_at`, `updated_at`) VALUES (10, 10, 10, '1993-01-06 16:50:27', '1973-04-20 08:33:05');
-INSERT INTO `posts_media` (`id`, `post_id`, `media_id`, `created_at`, `updated_at`) VALUES (11, 11, 11, '1996-08-01 23:48:20', '1999-01-15 22:01:23');
-INSERT INTO `posts_media` (`id`, `post_id`, `media_id`, `created_at`, `updated_at`) VALUES (12, 12, 12, '2006-02-02 02:48:59', '1977-02-07 14:52:23');
-INSERT INTO `posts_media` (`id`, `post_id`, `media_id`, `created_at`, `updated_at`) VALUES (13, 13, 13, '1983-04-05 12:52:10', '1990-04-06 11:18:56');
-INSERT INTO `posts_media` (`id`, `post_id`, `media_id`, `created_at`, `updated_at`) VALUES (14, 14, 14, '1986-08-19 08:00:41', '2002-07-26 12:52:53');
-INSERT INTO `posts_media` (`id`, `post_id`, `media_id`, `created_at`, `updated_at`) VALUES (15, 15, 15, '1990-01-07 19:05:04', '2005-08-20 08:28:27');
-INSERT INTO `posts_media` (`id`, `post_id`, `media_id`, `created_at`, `updated_at`) VALUES (16, 16, 16, '1998-11-13 00:20:34', '2018-12-15 20:02:09');
-INSERT INTO `posts_media` (`id`, `post_id`, `media_id`, `created_at`, `updated_at`) VALUES (17, 17, 17, '2017-05-30 14:27:47', '1981-02-08 11:40:24');
-INSERT INTO `posts_media` (`id`, `post_id`, `media_id`, `created_at`, `updated_at`) VALUES (18, 18, 18, '2022-04-14 15:21:24', '2009-11-20 10:30:26');
-INSERT INTO `posts_media` (`id`, `post_id`, `media_id`, `created_at`, `updated_at`) VALUES (19, 19, 19, '1983-02-15 17:57:13', '2018-08-21 05:45:45');
-INSERT INTO `posts_media` (`id`, `post_id`, `media_id`, `created_at`, `updated_at`) VALUES (20, 20, 20, '1999-06-05 04:33:55', '2015-11-07 20:42:29');
-INSERT INTO `posts_media` (`id`, `post_id`, `media_id`, `created_at`, `updated_at`) VALUES (21, 21, 21, '1989-08-09 19:39:03', '1977-01-09 12:36:10');
-INSERT INTO `posts_media` (`id`, `post_id`, `media_id`, `created_at`, `updated_at`) VALUES (22, 22, 22, '1981-09-18 20:10:55', '1989-03-14 02:30:40');
-INSERT INTO `posts_media` (`id`, `post_id`, `media_id`, `created_at`, `updated_at`) VALUES (23, 23, 23, '1971-02-19 22:08:32', '2016-08-22 06:02:51');
-INSERT INTO `posts_media` (`id`, `post_id`, `media_id`, `created_at`, `updated_at`) VALUES (24, 24, 24, '2000-01-25 19:10:44', '1988-04-10 01:54:58');
-INSERT INTO `posts_media` (`id`, `post_id`, `media_id`, `created_at`, `updated_at`) VALUES (25, 25, 25, '2018-07-21 01:11:43', '1986-08-28 12:54:29');
-INSERT INTO `posts_media` (`id`, `post_id`, `media_id`, `created_at`, `updated_at`) VALUES (26, 26, 26, '1999-06-16 16:31:22', '2021-09-14 13:52:35');
-INSERT INTO `posts_media` (`id`, `post_id`, `media_id`, `created_at`, `updated_at`) VALUES (27, 27, 27, '1977-06-22 21:28:18', '2013-01-31 17:09:00');
-INSERT INTO `posts_media` (`id`, `post_id`, `media_id`, `created_at`, `updated_at`) VALUES (28, 28, 28, '1980-11-15 06:22:55', '1992-08-16 22:24:05');
-INSERT INTO `posts_media` (`id`, `post_id`, `media_id`, `created_at`, `updated_at`) VALUES (29, 29, 29, '2016-11-03 10:06:48', '2017-01-24 09:33:44');
-INSERT INTO `posts_media` (`id`, `post_id`, `media_id`, `created_at`, `updated_at`) VALUES (30, 30, 30, '2021-12-14 21:44:39', '1978-02-06 20:42:59');
-INSERT INTO `posts_media` (`id`, `post_id`, `media_id`, `created_at`, `updated_at`) VALUES (31, 31, 31, '1997-01-09 22:58:32', '2000-08-14 05:09:03');
-INSERT INTO `posts_media` (`id`, `post_id`, `media_id`, `created_at`, `updated_at`) VALUES (32, 32, 32, '1999-06-16 01:23:32', '2021-09-13 05:24:45');
-INSERT INTO `posts_media` (`id`, `post_id`, `media_id`, `created_at`, `updated_at`) VALUES (33, 33, 33, '2007-03-03 00:53:58', '2002-10-30 04:53:33');
-INSERT INTO `posts_media` (`id`, `post_id`, `media_id`, `created_at`, `updated_at`) VALUES (34, 34, 34, '2003-07-13 16:29:27', '1995-08-06 00:29:08');
-INSERT INTO `posts_media` (`id`, `post_id`, `media_id`, `created_at`, `updated_at`) VALUES (35, 35, 35, '2008-07-31 12:46:49', '1995-08-24 10:30:21');
-INSERT INTO `posts_media` (`id`, `post_id`, `media_id`, `created_at`, `updated_at`) VALUES (36, 36, 36, '1997-04-12 02:43:46', '1983-01-02 21:12:16');
-INSERT INTO `posts_media` (`id`, `post_id`, `media_id`, `created_at`, `updated_at`) VALUES (37, 37, 37, '1980-05-26 14:55:18', '1986-12-24 22:25:13');
-INSERT INTO `posts_media` (`id`, `post_id`, `media_id`, `created_at`, `updated_at`) VALUES (38, 38, 38, '1999-12-05 06:47:55', '2000-08-01 03:57:26');
-INSERT INTO `posts_media` (`id`, `post_id`, `media_id`, `created_at`, `updated_at`) VALUES (39, 39, 39, '1976-09-03 12:55:40', '2022-02-21 02:18:23');
-INSERT INTO `posts_media` (`id`, `post_id`, `media_id`, `created_at`, `updated_at`) VALUES (40, 40, 40, '1986-09-29 10:52:05', '2004-03-27 19:13:07');
-INSERT INTO `posts_media` (`id`, `post_id`, `media_id`, `created_at`, `updated_at`) VALUES (41, 41, 41, '1982-08-08 20:49:37', '1975-05-25 09:16:16');
-INSERT INTO `posts_media` (`id`, `post_id`, `media_id`, `created_at`, `updated_at`) VALUES (42, 42, 42, '2006-03-26 09:07:12', '2018-11-03 23:18:20');
-INSERT INTO `posts_media` (`id`, `post_id`, `media_id`, `created_at`, `updated_at`) VALUES (43, 43, 43, '2021-07-20 19:48:58', '1981-11-12 22:11:07');
-INSERT INTO `posts_media` (`id`, `post_id`, `media_id`, `created_at`, `updated_at`) VALUES (44, 44, 44, '2005-03-25 14:13:58', '1984-02-22 15:11:54');
-INSERT INTO `posts_media` (`id`, `post_id`, `media_id`, `created_at`, `updated_at`) VALUES (45, 45, 45, '1982-04-11 04:46:08', '2020-06-03 05:25:02');
-INSERT INTO `posts_media` (`id`, `post_id`, `media_id`, `created_at`, `updated_at`) VALUES (46, 46, 46, '1988-10-07 00:37:47', '2015-02-15 08:36:33');
-INSERT INTO `posts_media` (`id`, `post_id`, `media_id`, `created_at`, `updated_at`) VALUES (47, 47, 47, '1970-10-30 08:13:48', '2020-06-13 00:31:42');
-INSERT INTO `posts_media` (`id`, `post_id`, `media_id`, `created_at`, `updated_at`) VALUES (48, 48, 48, '1990-06-01 07:32:35', '1996-07-12 13:19:27');
-INSERT INTO `posts_media` (`id`, `post_id`, `media_id`, `created_at`, `updated_at`) VALUES (49, 49, 49, '1991-01-23 22:50:35', '1983-08-29 08:33:00');
-INSERT INTO `posts_media` (`id`, `post_id`, `media_id`, `created_at`, `updated_at`) VALUES (50, 50, 50, '2000-02-24 06:04:39', '1995-07-15 02:04:12');
-INSERT INTO `posts_media` (`id`, `post_id`, `media_id`, `created_at`, `updated_at`) VALUES (51, 51, 51, '1998-09-28 23:30:51', '1992-10-02 06:51:40');
-INSERT INTO `posts_media` (`id`, `post_id`, `media_id`, `created_at`, `updated_at`) VALUES (52, 52, 52, '1978-03-29 03:11:06', '1977-12-20 06:05:36');
-INSERT INTO `posts_media` (`id`, `post_id`, `media_id`, `created_at`, `updated_at`) VALUES (53, 53, 53, '2013-06-25 11:25:01', '2019-04-02 01:57:29');
-INSERT INTO `posts_media` (`id`, `post_id`, `media_id`, `created_at`, `updated_at`) VALUES (54, 54, 54, '2015-05-10 12:50:55', '1994-08-12 01:42:55');
-INSERT INTO `posts_media` (`id`, `post_id`, `media_id`, `created_at`, `updated_at`) VALUES (55, 55, 55, '1985-11-03 04:14:11', '2021-04-07 12:24:04');
-INSERT INTO `posts_media` (`id`, `post_id`, `media_id`, `created_at`, `updated_at`) VALUES (56, 56, 56, '1994-01-29 18:49:36', '2006-10-29 11:01:54');
-INSERT INTO `posts_media` (`id`, `post_id`, `media_id`, `created_at`, `updated_at`) VALUES (57, 57, 57, '1985-06-22 16:40:25', '1990-05-04 01:36:22');
-INSERT INTO `posts_media` (`id`, `post_id`, `media_id`, `created_at`, `updated_at`) VALUES (58, 58, 58, '1975-10-26 01:15:44', '2015-10-05 03:03:49');
-INSERT INTO `posts_media` (`id`, `post_id`, `media_id`, `created_at`, `updated_at`) VALUES (59, 59, 59, '1974-01-22 11:04:06', '2011-06-07 23:03:13');
-INSERT INTO `posts_media` (`id`, `post_id`, `media_id`, `created_at`, `updated_at`) VALUES (60, 60, 60, '2011-10-30 19:55:50', '1977-09-07 04:23:31');
-INSERT INTO `posts_media` (`id`, `post_id`, `media_id`, `created_at`, `updated_at`) VALUES (61, 61, 61, '2001-02-03 13:54:54', '2010-01-27 02:07:48');
-INSERT INTO `posts_media` (`id`, `post_id`, `media_id`, `created_at`, `updated_at`) VALUES (62, 62, 62, '2000-04-07 11:34:59', '2012-08-19 07:41:19');
-INSERT INTO `posts_media` (`id`, `post_id`, `media_id`, `created_at`, `updated_at`) VALUES (63, 63, 63, '2018-12-13 00:09:59', '1991-11-15 02:23:12');
-INSERT INTO `posts_media` (`id`, `post_id`, `media_id`, `created_at`, `updated_at`) VALUES (64, 64, 64, '1985-03-25 04:18:29', '1985-10-29 20:38:47');
-INSERT INTO `posts_media` (`id`, `post_id`, `media_id`, `created_at`, `updated_at`) VALUES (65, 65, 65, '2016-06-18 13:54:24', '1983-04-02 04:39:23');
-INSERT INTO `posts_media` (`id`, `post_id`, `media_id`, `created_at`, `updated_at`) VALUES (66, 66, 66, '2015-12-18 07:45:26', '1990-04-05 08:12:50');
-INSERT INTO `posts_media` (`id`, `post_id`, `media_id`, `created_at`, `updated_at`) VALUES (67, 67, 67, '2004-11-20 23:49:16', '2000-06-15 14:03:27');
-INSERT INTO `posts_media` (`id`, `post_id`, `media_id`, `created_at`, `updated_at`) VALUES (68, 68, 68, '1980-08-02 15:49:35', '1997-01-29 06:43:16');
-INSERT INTO `posts_media` (`id`, `post_id`, `media_id`, `created_at`, `updated_at`) VALUES (69, 69, 69, '2005-09-12 16:15:29', '1982-10-27 12:04:03');
-INSERT INTO `posts_media` (`id`, `post_id`, `media_id`, `created_at`, `updated_at`) VALUES (70, 70, 70, '2006-01-22 04:45:40', '1975-04-12 05:51:39');
-INSERT INTO `posts_media` (`id`, `post_id`, `media_id`, `created_at`, `updated_at`) VALUES (71, 71, 71, '2001-11-22 19:57:44', '1997-11-06 17:29:26');
-INSERT INTO `posts_media` (`id`, `post_id`, `media_id`, `created_at`, `updated_at`) VALUES (72, 72, 72, '2003-09-01 00:53:57', '2008-05-22 09:41:36');
-INSERT INTO `posts_media` (`id`, `post_id`, `media_id`, `created_at`, `updated_at`) VALUES (73, 73, 73, '2001-08-13 17:22:11', '1992-06-21 17:58:02');
-INSERT INTO `posts_media` (`id`, `post_id`, `media_id`, `created_at`, `updated_at`) VALUES (74, 74, 74, '2000-01-11 03:49:32', '1976-07-11 01:35:53');
-INSERT INTO `posts_media` (`id`, `post_id`, `media_id`, `created_at`, `updated_at`) VALUES (75, 75, 75, '2006-04-08 01:15:20', '1997-11-07 20:03:00');
-INSERT INTO `posts_media` (`id`, `post_id`, `media_id`, `created_at`, `updated_at`) VALUES (76, 76, 76, '2014-11-01 20:41:04', '1972-12-24 01:48:29');
-INSERT INTO `posts_media` (`id`, `post_id`, `media_id`, `created_at`, `updated_at`) VALUES (77, 77, 77, '2002-02-23 23:47:10', '1970-09-16 14:37:17');
-INSERT INTO `posts_media` (`id`, `post_id`, `media_id`, `created_at`, `updated_at`) VALUES (78, 78, 78, '1992-04-04 06:55:16', '1977-09-05 08:26:34');
-INSERT INTO `posts_media` (`id`, `post_id`, `media_id`, `created_at`, `updated_at`) VALUES (79, 79, 79, '2008-09-08 06:41:02', '2007-01-26 20:28:29');
-INSERT INTO `posts_media` (`id`, `post_id`, `media_id`, `created_at`, `updated_at`) VALUES (80, 80, 80, '2003-12-25 10:28:17', '2009-11-17 08:30:32');
-INSERT INTO `posts_media` (`id`, `post_id`, `media_id`, `created_at`, `updated_at`) VALUES (81, 81, 81, '1973-10-24 13:04:34', '2008-06-25 12:14:16');
-INSERT INTO `posts_media` (`id`, `post_id`, `media_id`, `created_at`, `updated_at`) VALUES (82, 82, 82, '2021-12-08 01:58:28', '2021-04-28 04:14:35');
-INSERT INTO `posts_media` (`id`, `post_id`, `media_id`, `created_at`, `updated_at`) VALUES (83, 83, 83, '1999-02-23 18:47:59', '1990-05-06 14:47:15');
-INSERT INTO `posts_media` (`id`, `post_id`, `media_id`, `created_at`, `updated_at`) VALUES (84, 84, 84, '1982-12-16 08:56:23', '1987-06-24 13:11:56');
-INSERT INTO `posts_media` (`id`, `post_id`, `media_id`, `created_at`, `updated_at`) VALUES (85, 85, 85, '1986-09-01 07:59:13', '1977-03-31 18:14:16');
-INSERT INTO `posts_media` (`id`, `post_id`, `media_id`, `created_at`, `updated_at`) VALUES (86, 86, 86, '1999-05-30 04:31:36', '1985-07-19 23:04:57');
-INSERT INTO `posts_media` (`id`, `post_id`, `media_id`, `created_at`, `updated_at`) VALUES (87, 87, 87, '1978-02-01 15:08:58', '1988-05-24 18:47:43');
-INSERT INTO `posts_media` (`id`, `post_id`, `media_id`, `created_at`, `updated_at`) VALUES (88, 88, 88, '1996-07-04 08:38:54', '2001-12-22 21:03:53');
-INSERT INTO `posts_media` (`id`, `post_id`, `media_id`, `created_at`, `updated_at`) VALUES (89, 89, 89, '1983-03-25 21:45:05', '1982-05-14 05:50:14');
-INSERT INTO `posts_media` (`id`, `post_id`, `media_id`, `created_at`, `updated_at`) VALUES (90, 90, 90, '1973-08-24 05:04:43', '2002-04-19 19:00:25');
-INSERT INTO `posts_media` (`id`, `post_id`, `media_id`, `created_at`, `updated_at`) VALUES (91, 91, 91, '2011-08-26 15:03:31', '2001-10-20 09:06:24');
-INSERT INTO `posts_media` (`id`, `post_id`, `media_id`, `created_at`, `updated_at`) VALUES (92, 92, 92, '2014-11-25 02:19:25', '1988-01-05 07:41:26');
-INSERT INTO `posts_media` (`id`, `post_id`, `media_id`, `created_at`, `updated_at`) VALUES (93, 93, 93, '1976-04-10 10:12:59', '1973-02-22 00:47:59');
-INSERT INTO `posts_media` (`id`, `post_id`, `media_id`, `created_at`, `updated_at`) VALUES (94, 94, 94, '1991-01-18 22:56:29', '2010-10-01 05:40:28');
-INSERT INTO `posts_media` (`id`, `post_id`, `media_id`, `created_at`, `updated_at`) VALUES (95, 95, 95, '1993-02-15 23:01:44', '2022-05-06 07:12:10');
-INSERT INTO `posts_media` (`id`, `post_id`, `media_id`, `created_at`, `updated_at`) VALUES (96, 96, 96, '1970-06-16 03:41:58', '1990-04-21 00:54:54');
-INSERT INTO `posts_media` (`id`, `post_id`, `media_id`, `created_at`, `updated_at`) VALUES (97, 97, 97, '1984-12-28 16:27:29', '1983-09-10 12:49:16');
-INSERT INTO `posts_media` (`id`, `post_id`, `media_id`, `created_at`, `updated_at`) VALUES (98, 98, 98, '2016-04-27 03:52:03', '1989-01-27 15:59:40');
-INSERT INTO `posts_media` (`id`, `post_id`, `media_id`, `created_at`, `updated_at`) VALUES (99, 99, 99, '2007-03-08 15:59:42', '2004-06-13 07:19:40');
-INSERT INTO `posts_media` (`id`, `post_id`, `media_id`, `created_at`, `updated_at`) VALUES (100, 100, 100, '1998-06-30 04:09:09', '1989-05-04 14:16:56');
+INSERT INTO `posts_media` (post_id, `media_id`, `created_at`, `updated_at`) VALUES (1, 1, '1996-09-14 09:26:09', '2020-02-02 15:15:58');
+INSERT INTO `posts_media` (post_id, `media_id`, `created_at`, `updated_at`) VALUES (2, 2, '1977-06-10 12:43:16', '1991-04-13 22:04:20');
+INSERT INTO `posts_media` (post_id, `media_id`, `created_at`, `updated_at`) VALUES (3, 3, '1993-11-24 23:09:24', '1974-05-14 14:01:42');
+INSERT INTO `posts_media` (post_id, `media_id`, `created_at`, `updated_at`) VALUES (4, 4, '2016-08-17 20:56:34', '1971-03-24 13:10:45');
+INSERT INTO `posts_media` (post_id, `media_id`, `created_at`, `updated_at`) VALUES (5, 5, '2015-10-14 04:43:13', '2009-03-25 01:32:17');
+INSERT INTO `posts_media` (post_id, `media_id`, `created_at`, `updated_at`) VALUES (6, 6, '1993-09-04 09:14:32', '1972-11-16 14:56:30');
+INSERT INTO `posts_media` (post_id, `media_id`, `created_at`, `updated_at`) VALUES (7, 7, '2019-05-20 15:45:10', '2011-10-26 22:19:01');
+INSERT INTO `posts_media` (post_id, `media_id`, `created_at`, `updated_at`) VALUES (8, 8, '2018-02-12 22:09:34', '1998-09-29 03:37:03');
+INSERT INTO `posts_media` (post_id, `media_id`, `created_at`, `updated_at`) VALUES (9, 9, '1984-03-12 18:50:50', '2001-02-12 07:06:50');
+INSERT INTO `posts_media` (post_id, `media_id`, `created_at`, `updated_at`) VALUES (10, 10, '1993-01-06 16:50:27', '1973-04-20 08:33:05');
+INSERT INTO `posts_media` (post_id, `media_id`, `created_at`, `updated_at`) VALUES (11, 11, '1996-08-01 23:48:20', '1999-01-15 22:01:23');
+INSERT INTO `posts_media` (post_id, `media_id`, `created_at`, `updated_at`) VALUES (12, 12, '2006-02-02 02:48:59', '1977-02-07 14:52:23');
+INSERT INTO `posts_media` (post_id, `media_id`, `created_at`, `updated_at`) VALUES (13, 13, '1983-04-05 12:52:10', '1990-04-06 11:18:56');
+INSERT INTO `posts_media` (post_id, `media_id`, `created_at`, `updated_at`) VALUES (14, 14, '1986-08-19 08:00:41', '2002-07-26 12:52:53');
+INSERT INTO `posts_media` (post_id, `media_id`, `created_at`, `updated_at`) VALUES (15, 15, '1990-01-07 19:05:04', '2005-08-20 08:28:27');
+INSERT INTO `posts_media` (post_id, `media_id`, `created_at`, `updated_at`) VALUES (16, 16, '1998-11-13 00:20:34', '2018-12-15 20:02:09');
+INSERT INTO `posts_media` (post_id, `media_id`, `created_at`, `updated_at`) VALUES (17, 17, '2017-05-30 14:27:47', '1981-02-08 11:40:24');
+INSERT INTO `posts_media` (post_id, `media_id`, `created_at`, `updated_at`) VALUES (18, 18, '2022-04-14 15:21:24', '2009-11-20 10:30:26');
+INSERT INTO `posts_media` (post_id, `media_id`, `created_at`, `updated_at`) VALUES (19, 19, '1983-02-15 17:57:13', '2018-08-21 05:45:45');
+INSERT INTO `posts_media` (post_id, `media_id`, `created_at`, `updated_at`) VALUES (20, 20, '1999-06-05 04:33:55', '2015-11-07 20:42:29');
+INSERT INTO `posts_media` (post_id, `media_id`, `created_at`, `updated_at`) VALUES (21, 21, '1989-08-09 19:39:03', '1977-01-09 12:36:10');
+INSERT INTO `posts_media` (post_id, `media_id`, `created_at`, `updated_at`) VALUES (22, 22, '1981-09-18 20:10:55', '1989-03-14 02:30:40');
+INSERT INTO `posts_media` (post_id, `media_id`, `created_at`, `updated_at`) VALUES (23, 23, '1971-02-19 22:08:32', '2016-08-22 06:02:51');
+INSERT INTO `posts_media` (post_id, `media_id`, `created_at`, `updated_at`) VALUES (24, 24, '2000-01-25 19:10:44', '1988-04-10 01:54:58');
+INSERT INTO `posts_media` (post_id, `media_id`, `created_at`, `updated_at`) VALUES (25, 25, '2018-07-21 01:11:43', '1986-08-28 12:54:29');
+INSERT INTO `posts_media` (post_id, `media_id`, `created_at`, `updated_at`) VALUES (26, 26, '1999-06-16 16:31:22', '2021-09-14 13:52:35');
+INSERT INTO `posts_media` (post_id, `media_id`, `created_at`, `updated_at`) VALUES (27, 27, '1977-06-22 21:28:18', '2013-01-31 17:09:00');
+INSERT INTO `posts_media` (post_id, `media_id`, `created_at`, `updated_at`) VALUES (28, 28, '1980-11-15 06:22:55', '1992-08-16 22:24:05');
+INSERT INTO `posts_media` (post_id, `media_id`, `created_at`, `updated_at`) VALUES (29, 29, '2016-11-03 10:06:48', '2017-01-24 09:33:44');
+INSERT INTO `posts_media` (post_id, `media_id`, `created_at`, `updated_at`) VALUES (30, 30, '2021-12-14 21:44:39', '1978-02-06 20:42:59');
+INSERT INTO `posts_media` (post_id, `media_id`, `created_at`, `updated_at`) VALUES (31, 31, '1997-01-09 22:58:32', '2000-08-14 05:09:03');
+INSERT INTO `posts_media` (post_id, `media_id`, `created_at`, `updated_at`) VALUES (32, 32, '1999-06-16 01:23:32', '2021-09-13 05:24:45');
+INSERT INTO `posts_media` (post_id, `media_id`, `created_at`, `updated_at`) VALUES (33, 33, '2007-03-03 00:53:58', '2002-10-30 04:53:33');
+INSERT INTO `posts_media` (post_id, `media_id`, `created_at`, `updated_at`) VALUES (34, 34, '2003-07-13 16:29:27', '1995-08-06 00:29:08');
+INSERT INTO `posts_media` (post_id, `media_id`, `created_at`, `updated_at`) VALUES (35, 35, '2008-07-31 12:46:49', '1995-08-24 10:30:21');
+INSERT INTO `posts_media` (post_id, `media_id`, `created_at`, `updated_at`) VALUES (36, 36, '1997-04-12 02:43:46', '1983-01-02 21:12:16');
+INSERT INTO `posts_media` (post_id, `media_id`, `created_at`, `updated_at`) VALUES (37, 37, '1980-05-26 14:55:18', '1986-12-24 22:25:13');
+INSERT INTO `posts_media` (post_id, `media_id`, `created_at`, `updated_at`) VALUES (38, 38, '1999-12-05 06:47:55', '2000-08-01 03:57:26');
+INSERT INTO `posts_media` (post_id, `media_id`, `created_at`, `updated_at`) VALUES (39, 39, '1976-09-03 12:55:40', '2022-02-21 02:18:23');
+INSERT INTO `posts_media` (post_id, `media_id`, `created_at`, `updated_at`) VALUES (40, 40, '1986-09-29 10:52:05', '2004-03-27 19:13:07');
+INSERT INTO `posts_media` (post_id, `media_id`, `created_at`, `updated_at`) VALUES (41, 41, '1982-08-08 20:49:37', '1975-05-25 09:16:16');
+INSERT INTO `posts_media` (post_id, `media_id`, `created_at`, `updated_at`) VALUES (42, 42, '2006-03-26 09:07:12', '2018-11-03 23:18:20');
+INSERT INTO `posts_media` (post_id, `media_id`, `created_at`, `updated_at`) VALUES (43, 43, '2021-07-20 19:48:58', '1981-11-12 22:11:07');
+INSERT INTO `posts_media` (post_id, `media_id`, `created_at`, `updated_at`) VALUES (44, 44, '2005-03-25 14:13:58', '1984-02-22 15:11:54');
+INSERT INTO `posts_media` (post_id, `media_id`, `created_at`, `updated_at`) VALUES (45, 45, '1982-04-11 04:46:08', '2020-06-03 05:25:02');
+INSERT INTO `posts_media` (post_id, `media_id`, `created_at`, `updated_at`) VALUES (46, 46, '1988-10-07 00:37:47', '2015-02-15 08:36:33');
+INSERT INTO `posts_media` (post_id, `media_id`, `created_at`, `updated_at`) VALUES (47, 47, '1970-10-30 08:13:48', '2020-06-13 00:31:42');
+INSERT INTO `posts_media` (post_id, `media_id`, `created_at`, `updated_at`) VALUES (48, 48, '1990-06-01 07:32:35', '1996-07-12 13:19:27');
+INSERT INTO `posts_media` (post_id, `media_id`, `created_at`, `updated_at`) VALUES (49, 49, '1991-01-23 22:50:35', '1983-08-29 08:33:00');
+INSERT INTO `posts_media` (post_id, `media_id`, `created_at`, `updated_at`) VALUES (50, 50, '2000-02-24 06:04:39', '1995-07-15 02:04:12');
+INSERT INTO `posts_media` (post_id, `media_id`, `created_at`, `updated_at`) VALUES (51, 51, '1998-09-28 23:30:51', '1992-10-02 06:51:40');
+INSERT INTO `posts_media` (post_id, `media_id`, `created_at`, `updated_at`) VALUES (52, 52, '1978-03-29 03:11:06', '1977-12-20 06:05:36');
+INSERT INTO `posts_media` (post_id, `media_id`, `created_at`, `updated_at`) VALUES (53, 53, '2013-06-25 11:25:01', '2019-04-02 01:57:29');
+INSERT INTO `posts_media` (post_id, `media_id`, `created_at`, `updated_at`) VALUES (54, 54, '2015-05-10 12:50:55', '1994-08-12 01:42:55');
+INSERT INTO `posts_media` (post_id, `media_id`, `created_at`, `updated_at`) VALUES (55, 55, '1985-11-03 04:14:11', '2021-04-07 12:24:04');
+INSERT INTO `posts_media` (post_id, `media_id`, `created_at`, `updated_at`) VALUES (56, 56, '1994-01-29 18:49:36', '2006-10-29 11:01:54');
+INSERT INTO `posts_media` (post_id, `media_id`, `created_at`, `updated_at`) VALUES (57, 57, '1985-06-22 16:40:25', '1990-05-04 01:36:22');
+INSERT INTO `posts_media` (post_id, `media_id`, `created_at`, `updated_at`) VALUES (58, 58, '1975-10-26 01:15:44', '2015-10-05 03:03:49');
+INSERT INTO `posts_media` (post_id, `media_id`, `created_at`, `updated_at`) VALUES (59, 59, '1974-01-22 11:04:06', '2011-06-07 23:03:13');
+INSERT INTO `posts_media` (post_id, `media_id`, `created_at`, `updated_at`) VALUES (60, 60, '2011-10-30 19:55:50', '1977-09-07 04:23:31');
+INSERT INTO `posts_media` (post_id, `media_id`, `created_at`, `updated_at`) VALUES (61, 61, '2001-02-03 13:54:54', '2010-01-27 02:07:48');
+INSERT INTO `posts_media` (post_id, `media_id`, `created_at`, `updated_at`) VALUES (62, 62, '2000-04-07 11:34:59', '2012-08-19 07:41:19');
+INSERT INTO `posts_media` (post_id, `media_id`, `created_at`, `updated_at`) VALUES (63, 63, '2018-12-13 00:09:59', '1991-11-15 02:23:12');
+INSERT INTO `posts_media` (post_id, `media_id`, `created_at`, `updated_at`) VALUES (64, 64, '1985-03-25 04:18:29', '1985-10-29 20:38:47');
+INSERT INTO `posts_media` (post_id, `media_id`, `created_at`, `updated_at`) VALUES (65, 65, '2016-06-18 13:54:24', '1983-04-02 04:39:23');
+INSERT INTO `posts_media` (post_id, `media_id`, `created_at`, `updated_at`) VALUES (66, 66, '2015-12-18 07:45:26', '1990-04-05 08:12:50');
+INSERT INTO `posts_media` (post_id, `media_id`, `created_at`, `updated_at`) VALUES (67, 67, '2004-11-20 23:49:16', '2000-06-15 14:03:27');
+INSERT INTO `posts_media` (post_id, `media_id`, `created_at`, `updated_at`) VALUES (68, 68, '1980-08-02 15:49:35', '1997-01-29 06:43:16');
+INSERT INTO `posts_media` (post_id, `media_id`, `created_at`, `updated_at`) VALUES (69, 69, '2005-09-12 16:15:29', '1982-10-27 12:04:03');
+INSERT INTO `posts_media` (post_id, `media_id`, `created_at`, `updated_at`) VALUES (70, 70, '2006-01-22 04:45:40', '1975-04-12 05:51:39');
+INSERT INTO `posts_media` (post_id, `media_id`, `created_at`, `updated_at`) VALUES (71, 71, '2001-11-22 19:57:44', '1997-11-06 17:29:26');
+INSERT INTO `posts_media` (post_id, `media_id`, `created_at`, `updated_at`) VALUES (72, 72, '2003-09-01 00:53:57', '2008-05-22 09:41:36');
+INSERT INTO `posts_media` (post_id, `media_id`, `created_at`, `updated_at`) VALUES (73, 73, '2001-08-13 17:22:11', '1992-06-21 17:58:02');
+INSERT INTO `posts_media` (post_id, `media_id`, `created_at`, `updated_at`) VALUES (74, 74, '2000-01-11 03:49:32', '1976-07-11 01:35:53');
+INSERT INTO `posts_media` (post_id, `media_id`, `created_at`, `updated_at`) VALUES (75, 75, '2006-04-08 01:15:20', '1997-11-07 20:03:00');
+INSERT INTO `posts_media` (post_id, `media_id`, `created_at`, `updated_at`) VALUES (76, 76, '2014-11-01 20:41:04', '1972-12-24 01:48:29');
+INSERT INTO `posts_media` (post_id, `media_id`, `created_at`, `updated_at`) VALUES (77, 77, '2002-02-23 23:47:10', '1970-09-16 14:37:17');
+INSERT INTO `posts_media` (post_id, `media_id`, `created_at`, `updated_at`) VALUES (78, 78, '1992-04-04 06:55:16', '1977-09-05 08:26:34');
+INSERT INTO `posts_media` (post_id, `media_id`, `created_at`, `updated_at`) VALUES (79, 79, '2008-09-08 06:41:02', '2007-01-26 20:28:29');
+INSERT INTO `posts_media` (post_id, `media_id`, `created_at`, `updated_at`) VALUES (80, 80, '2003-12-25 10:28:17', '2009-11-17 08:30:32');
+INSERT INTO `posts_media` (post_id, `media_id`, `created_at`, `updated_at`) VALUES (81, 81, '1973-10-24 13:04:34', '2008-06-25 12:14:16');
+INSERT INTO `posts_media` (post_id, `media_id`, `created_at`, `updated_at`) VALUES (82, 82, '2021-12-08 01:58:28', '2021-04-28 04:14:35');
+INSERT INTO `posts_media` (post_id, `media_id`, `created_at`, `updated_at`) VALUES (83, 83, '1999-02-23 18:47:59', '1990-05-06 14:47:15');
+INSERT INTO `posts_media` (post_id, `media_id`, `created_at`, `updated_at`) VALUES (84, 84, '1982-12-16 08:56:23', '1987-06-24 13:11:56');
+INSERT INTO `posts_media` (post_id, `media_id`, `created_at`, `updated_at`) VALUES (85, 85, '1986-09-01 07:59:13', '1977-03-31 18:14:16');
+INSERT INTO `posts_media` (post_id, `media_id`, `created_at`, `updated_at`) VALUES (86, 86, '1999-05-30 04:31:36', '1985-07-19 23:04:57');
+INSERT INTO `posts_media` (post_id, `media_id`, `created_at`, `updated_at`) VALUES (87, 87, '1978-02-01 15:08:58', '1988-05-24 18:47:43');
+INSERT INTO `posts_media` (post_id, `media_id`, `created_at`, `updated_at`) VALUES (88, 88, '1996-07-04 08:38:54', '2001-12-22 21:03:53');
+INSERT INTO `posts_media` (post_id, `media_id`, `created_at`, `updated_at`) VALUES (89, 89, '1983-03-25 21:45:05', '1982-05-14 05:50:14');
+INSERT INTO `posts_media` (post_id, `media_id`, `created_at`, `updated_at`) VALUES (90, 90, '1973-08-24 05:04:43', '2002-04-19 19:00:25');
+INSERT INTO `posts_media` (post_id, `media_id`, `created_at`, `updated_at`) VALUES (91, 91, '2011-08-26 15:03:31', '2001-10-20 09:06:24');
+INSERT INTO `posts_media` (post_id, `media_id`, `created_at`, `updated_at`) VALUES (92, 92, '2014-11-25 02:19:25', '1988-01-05 07:41:26');
+INSERT INTO `posts_media` (post_id, `media_id`, `created_at`, `updated_at`) VALUES (93, 93, '1976-04-10 10:12:59', '1973-02-22 00:47:59');
+INSERT INTO `posts_media` (post_id, `media_id`, `created_at`, `updated_at`) VALUES (94, 94, '1991-01-18 22:56:29', '2010-10-01 05:40:28');
+INSERT INTO `posts_media` (post_id, `media_id`, `created_at`, `updated_at`) VALUES (95, 95, '1993-02-15 23:01:44', '2022-05-06 07:12:10');
+INSERT INTO `posts_media` (post_id, `media_id`, `created_at`, `updated_at`) VALUES (96, 96, '1970-06-16 03:41:58', '1990-04-21 00:54:54');
+INSERT INTO `posts_media` (post_id, `media_id`, `created_at`, `updated_at`) VALUES (97, 97, '1984-12-28 16:27:29', '1983-09-10 12:49:16');
+INSERT INTO `posts_media` (post_id, `media_id`, `created_at`, `updated_at`) VALUES (98, 98, '2016-04-27 03:52:03', '1989-01-27 15:59:40');
+INSERT INTO `posts_media` (post_id, `media_id`, `created_at`, `updated_at`) VALUES (99, 99, '2007-03-08 15:59:42', '2004-06-13 07:19:40');
+INSERT INTO `posts_media` (post_id, `media_id`, `created_at`, `updated_at`) VALUES (100, 100, '1998-06-30 04:09:09', '1989-05-04 14:16:56');
 
 UPDATE posts_media SET
 post_id = FLOOR(1 + RAND()*99.99),
 media_id = FLOOR(1 + RAND()*99.99)
-WHERE id > 0;
+WHERE post_id > 0;
 
 INSERT INTO `like_to_user` (`from_user_id`, `to_user_id`, `created_at`, `updated_at`) VALUES (1, 1, '2010-11-17 10:56:02', '1979-06-27 07:10:05');
 INSERT INTO `like_to_user` (`from_user_id`, `to_user_id`, `created_at`, `updated_at`) VALUES (2, 2, '1980-04-26 06:35:08', '2003-12-16 00:36:09');
