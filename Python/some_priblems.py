@@ -3,13 +3,11 @@
 Получите новый список, элементами которого будут только уникальные элементы исходного.
 """
 my_list_1 = [2, 2, 5, 12, 8, 2, 12]
-mnozh1 = set(my_list_1)
-mnozh2 = set()
-for i in range (len(my_list_1)-1):
-    for k in range (i+1, len(my_list_1)):
-        if my_list_1[i] == my_list_1[k]:
-            mnozh2.add(my_list_1[i])
-print(mnozh1-mnozh2)
+result = []
+for number in my_list_1:
+    if my_list_1.count(number) == 1:
+        result.append(number)
+print(result)
 """
 Дана дата в формате dd.mm.yyyy, например: 02.11.2013.
 Ваша задача — вывести дату в текстовом виде,
@@ -29,9 +27,9 @@ print(day_of_month[int(splited_date[0])-1], months[int(splited_date[1])-1], spli
 """
 my_list_1 = [2, 5, 8, 2, 12, 12, 4]
 my_list_2 = [2, 7, 12, 3]
-for i in range(len(my_list_2)):
-    if my_list_2[i] in my_list_1:
-        my_list_1.remove(my_list_2[i])
+for number in my_list_1[:]:
+    if number in my_list_2:
+        my_list_1.remove(number)
 print(my_list_1)
 """
 Создайте программу “Медицинская анкета”, где вы запросите у пользователя следующие данные: 
