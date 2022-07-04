@@ -1,4 +1,80 @@
 """
+Написать функцию которая принимает на вход число от 1 до 100. Если число равно 13,
+функция поднимает исключительную ситуации ValueError иначе возвращает введенное число, возведенное в квадрат.
+Далее написать основной код программы. Пользователь вводит число.
+Введенное число передаем параметром в написанную функцию и печатаем результат, который вернула функция.
+Обработать возможность возникновения исключительной ситуации, которая поднимается внутри функции.
+"""
+def pow2(number):
+    if input_number == 13:
+        raise ValueError('Несчастливое число')
+    elif input_number < 1 or input_number > 100:
+        raise ValueError('Число не входит в диапазон от 1 до 100')
+    else:
+        return number ** 2
+input_number = int(input('Введите число: '))
+try:
+    result = pow2(input_number)
+except ValueError:
+    print('Число не входит в диапазон от 1 до 100, либо равно 13')
+else:
+    print(pow2(input_number))
+"""
+Напишите функцию которая принимает на вход список.
+Функция создает из этого списка новый список из квадратных корней чисел
+(если число положительное) и самих чисел (если число отрицательное) и возвращает результат
+(желательно применить генератор и тернарный оператор при необходимости).
+В результате работы функции исходный список не должен измениться.
+"""
+import math
+my_list = [2, 2, 5, 12, 8, 2, 25, -1, -5, -10, -15, -99]
+def sqrt_list(input_list):
+    result = [math.sqrt(number) if number > 0 else number for number in input_list]
+    return result
+print(sqrt_list(my_list))
+"""
+Дан список, заполненный произвольными числами.
+Получить список из элементов исходного, удовлетворяющих следующим условиям:
+•	Элемент кратен 3,
+•	Элемент положительный,
+•	Элемент не кратен 4.
+"""
+my_list = [2, 2, 5, 12, 8, 2, 25, -1, -5, -10, -15, -99, 15, 99]
+result = [number for number in my_list if number % 3 == 0 and number > 0 and number % 4 != 0]
+print(result)
+"""
+с помощью генераторов списка.
+Даны два списка фруктов. Получить список фруктов, присутствующих в обоих исходных списках
+"""
+fruit1 = ["apple", "banana", "watermelon", "orange"]
+fruit2 = ["peach", "lemon", "apple", "pear", "melon", "banana"]
+common_fruits = [fruit for fruit in fruit1 if fruit in fruit2]
+print(common_fruits)
+"""
+С помощью модулей json и pickle сериализовать данный словарь в json и в байты, вывести результаты в терминал.
+Записать результаты в файлы group.json, group.pickle соответственно. В файле group.json указать кодировку utf-8.
+Открыть файлы group.json и group.pickle, прочитать из них информацию. И получить объект: словарь из предыдущего задания.
+"""
+import json
+import pickle
+my_favourite_group = {'name': 'Г.М.О.', 'tracks': ['Последний месяц осени', 'Шапито'],
+                      'Albums': [{'name': 'Делать панк-рок', 'year': 2016},
+                                 {'name': 'Шапито', 'year': 2014}]}
+j_group = json.dumps(my_favourite_group)
+print(j_group)
+p_group = pickle.dumps(my_favourite_group)
+print(p_group)
+with open('group.pickle', 'wb') as f:
+    pickle.dump(my_favourite_group, f)
+with open('group.pickle', 'rb') as f:
+    result = pickle.load(f)
+print(result)
+with open('group.json', 'w', encoding='utf-8') as f:
+    json.dump(my_favourite_group, f)
+with open('group.json', 'r', encoding='utf-8') as f:
+    result = json.load(f)
+print(type(result))
+"""
 Давайте опишем пару сущностей player и enemy через словарь, который будет иметь ключи и значения:
 name - строка полученная от пользователя, health = 100, damage = 50.
 Теперь надо создать функцию attack(person1, person2).
