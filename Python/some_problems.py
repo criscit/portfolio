@@ -1,13 +1,60 @@
 """
+Реализовать структуру данных «Товары». Она должна представлять собой список кортежей.
+Каждый кортеж хранит информацию об отдельном товаре.
+В кортеже должно быть два элемента — номер товара и словарь с параметрами
+(характеристиками товара: название, цена, количество, единица измерения).
+Структуру нужно сформировать программно, т.е. запрашивать все данные у пользователя.
+Необходимо собрать аналитику о товарах. Реализовать словарь, в котором каждый ключ — характеристика товара,
+например название, а значение — список значений-характеристик, например список названий товаров.
+"""
+products_structure = {"название": str, "цена": int, "количество": int, "ед": str}
+product_list = []
+decision = "да"
+products_count = 1
+while decision == "да":
+    products_info = {}
+    for product_key, info_type in products_structure.items():
+        products_info[product_key] = info_type(input(f"Введите значение '{product_key}': "))
+    product_list.append((products_count, products_info))
+    decision = input("Добавить другой товар? (Введите да или нет): ").lower()
+    products_count += 1
+print(product_list)
+product_analysis = {}
+for analytic_keys in products_structure.keys():
+    item_list = []
+    for product in product_list:
+        item_list.append(product[1][analytic_keys])
+        product_analysis[analytic_keys] = item_list
+print(product_analysis)
+"""
+Реализовать структуру «Рейтинг», представляющую собой не возрастающий набор натуральных чисел.
+ У пользователя необходимо запрашивать новый элемент рейтинга.
+Если в рейтинге существуют элементы с одинаковыми значениями,
+то новый элемент с тем же значением должен разместиться после них.
+"""
+my_list = [7, 5, 3, 3, 2]
+user_number = int(input('Введите число: '))
+number_count = my_list.count(user_number)
+if number_count:
+    last_current_index = my_list.index(user_number) + number_count
+    my_list.insert(last_current_index, user_number)
+elif user_number > my_list[0]:
+    my_list.insert(0, user_number)
+elif user_number < my_list[-1]:
+    my_list.append(user_number)
+else:
+    for idx, num in enumerate(my_list):
+        if user_number > num:
+            my_list.insert(idx, user_number)
+            break
+print(my_list)
+"""
 Пользователь вводит строку из нескольких слов, разделённых пробелами. Вывести каждое слово с новой строки.
 Строки необходимо пронумеровать. Если слово длинное, выводить только первые 10 букв в слове.
 """
-user_input = input("Введите несколько слов через пробел: ")
-words_list = user_input.split(" ")
-i = 1
-for word in words_list:
-    print(f"{i}. {word:.10}", end="\n")
-    i += 1
+words = input("Введите несколько слов через пробел: ").split()
+for idx, word in enumerate(words, start=1):
+    print(f"{idx}. {word:.10}")
 """
 Пользователь вводит месяц в виде целого числа от 1 до 12.
 Сообщить к какому времени года относится месяц (зима, весна, лето, осень). Напишите решения через list и через dict.
@@ -20,24 +67,20 @@ season = None
 for key in season_dict.keys():
     if month_number in key:
         season = season_dict[key]
+        break
 print(f"Сезон: {season} Месяц: {months[month_number-1]}")
 """
 Для списка реализовать обмен значений соседних элементов, т.е.
 Значениями обмениваются элементы с индексами 0 и 1, 2 и 3 и т.д.
 При нечетном количестве элементов последний сохранить на своем месте.
 """
-my_list = [2, 2, 5, 12, 8, 2, 25, -1, -5, -10, -15, -99, 105]
-result = []
-i = 0
-while i < len(my_list):
-    if i + 1 == len(my_list) and i % 2 == 0:
-        result.append(my_list[i])
-    elif i % 2 == 0:
-        result.append(my_list[i + 1])
-    else:
-        result.append(my_list[i - 1])
-    i += 1
-print(my_list, "\n", result)
+items = [2, 2, 5, 12, 8, 2, 25, -1, -5, -10, -15, -99, 105]
+print(items)
+i = 1
+for idx in range(0, len(items) - 1, 2):
+    next_idx = idx+1
+    items[idx], items[next_idx] = items[next_idx], items[idx]
+print(items)
 """
 Спортсмен занимается ежедневными пробежками. В первый день его результат составил a километров.
 Каждый день спортсмен увеличивал результат на 10 % относительно предыдущего.
