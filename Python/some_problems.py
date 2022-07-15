@@ -1,3 +1,88 @@
+"""Создать вручную и заполнить несколькими строками текстовый файл,
+в котором каждая строка должна содержать данные о фирме: название, форма собственности, выручка, издержки.
+Пример строки файла: firm_1 ООО 10000 5000.
+Необходимо построчно прочитать файл, вычислить прибыль каждой компании, а также среднюю прибыль.
+Если фирма получила убытки, в расчет средней прибыли ее не включать.
+Далее реализовать список. Он должен содержать словарь с фирмами и их прибылями, а также словарь со средней прибылью.
+Если фирма получила убытки, также добавить ее в словарь (со значением убытков)."""
+import json
+companies_data = []
+with open("task1.txt", encoding='utf-8') as input_data:
+    companies_dict = {}
+    profit_list = []
+    for company_row in input_data:
+        name, form, revenue, costs = company_row.split()
+        profit = float(revenue) - float(costs)
+        companies_dict[name] = profit
+        if profit > 0:
+            profit_list.append(profit)
+    companies_data.append(companies_dict)
+    companies_data.append({"average_profit": round(sum(profit_list) / len(profit_list), 2)})
+with open("task2.txt", 'w', encoding='utf-8') as output_data:
+    json.dump(companies_data, output_data)
+"""Необходимо создать (не программно) текстовый файл, где каждая строка описывает учебный предмет и наличие лекционных,
+практических и лабораторных занятий по этому предмету и их количество.
+Важно, чтобы для каждого предмета не обязательно были все типы занятий.
+Сформировать словарь, содержащий название предмета и общее количество занятий по нему. Вывести словарь на экран."""
+subjects = {}
+with open("task2.txt", encoding="utf-8") as file_obj:
+    for row in file_obj:
+        subject_info = row.split()
+        name = subject_info[0].rstrip(":")
+        subjects[name] = subject_info[1:]
+result = {}
+for key, value in subjects.items():
+    result[key] = sum([int(hours[:hours.index("(")]) for hours in value if hours != '—'])
+print(result)
+"""Создать (программно) текстовый файл, записать в него программно набор чисел, разделенных пробелами.
+Программа должна подсчитывать сумму чисел в файле и выводить ее на экран."""
+from random import randrange
+random_numbers = [randrange(1, 200) for _ in range(50)]
+with open("task2.txt", 'w', encoding="utf-8") as input_data:
+    input_data.write(" ".join(map(str, random_numbers)))
+with open("task2.txt", encoding="utf-8") as output_data:
+    numbers = output_data.read().split()
+print(sum(int(x) for x in numbers))
+"""Создать (не программно) текстовый файл со следующим содержимым:
+One — 1
+Two — 2
+Three — 3
+Four — 4
+Необходимо написать программу, открывающую файл на чтение и считывающую построчно данные.
+При этом английские числительные должны заменяться на русские.
+Новый блок строк должен записываться в новый текстовый файл."""
+translation = {'One': "Один", "Two": "Два", "Three": "Три", "Four": "Четыре"}
+converted_rows = []
+with open("task2.txt", encoding="utf-8") as input_data:
+    for row in input_data:
+        name, value = row.split(" — ")
+        converted_rows.append(f"{translation[name]} — {value}")
+with open("task2.txt", 'w', encoding="utf-8") as output_data:
+    output_data.writelines(converted_rows)
+"""Создать текстовый файл (не программно),
+построчно записать фамилии сотрудников и величину их окладов (не менее 10 строк).
+Определить, кто из сотрудников имеет оклад менее 20 тыс., вывести фамилии этих сотрудников.
+Выполнить подсчет средней величины дохода сотрудников."""
+with open("task2.txt", encoding="utf-8") as file_obj:
+    workers_salary = {x.split()[0]: float(x.split()[1]) for x in file_obj}
+for key, value in workers_salary.items():
+    if value < 20000:
+        print(key)
+print("Средняя заработная плата", sum(workers_salary.values())/len(workers_salary))
+"""Создать текстовый файл (не программно), сохранить в нем несколько строк, выполнить подсчет количества строк, 
+количества слов в каждой строке."""
+with open("task1.txt") as file_obj:
+    rows = file_obj.readlines()
+    rows_count, words_count = len(rows), [len(row.split()) for row in rows]
+    print(f'Количество строк: {rows_count}, \nКоличество слов в каждой строке: {words_count}')
+"""Создать программно файл в текстовом формате, записать в него построчно данные, вводимые пользователем.
+Об окончании ввода данных свидетельствует пустая строка."""
+while True:
+    with open("task1.txt", 'a+') as file_obj:
+            user_input = input("Введите данные строки: ")
+            if not user_input:
+                break
+            file_obj.write(f"{user_input}\n")
 """Реализовать генератор с помощью функции с ключевым словом yield, создающим очередное значение.
 При вызове функции должен создаваться объект-генератор.
 Функция должна вызываться следующим образом: for el in fact(n).
