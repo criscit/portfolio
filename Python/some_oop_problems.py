@@ -1,35 +1,3 @@
-"""Реализовать класс Stationery (канцелярская принадлежность).
-Определить в нем атрибут title (название) и метод draw (отрисовка). Метод выводит сообщение “Запуск отрисовки.”
-Создать три дочерних класса Pen (ручка), Pencil (карандаш).
-В каждом из классов реализовать переопределение метода draw.
-Для каждого из классов метод должен выводить уникальное сообщение.
-Создать экземпляры классов и проверить, что выведет описанный метод для каждого экземпляра."""
-
-
-class Stationery:
-    def __init__(self, title):
-        self.title = title
-
-    def draw(self):
-        print(f"Запуск отрисовки с помощью {self.title}")
-
-
-class Pen(Stationery):
-    def __init__(self):
-        super().__init__("pen")
-
-    def draw(self):
-        print(f"Запуск отрисовки с помощью {self.title}")
-
-
-class Pencil(Stationery):
-    def __init__(self):
-        super().__init__("pencil")
-
-    def draw(self):
-        print(f"Запуск отрисовки с помощью {self.title}")
-
-
 """Реализуйте базовый класс Car. У данного класса должны быть следующие атрибуты:
 speed, color, name, is_police (булево). А также методы: go, stop, turn(direction),
 которые должны сообщать, что машина поехала, остановилась, повернула (куда).
@@ -40,44 +8,45 @@ speed, color, name, is_police (булево). А также методы: go, st
 
 
 class Car:
-    is_police = False
+    speed: int
+    color: str
+    name: str
+    is_police: bool = False
 
-    def __init__(self, speed, color, name):
+    def __init__(self, speed: int, color: str, name: str):
         self.speed = speed
         self.color = color
         self.name = name
 
     def go(self):
-        print("Машина едет")
+        print(f"{self.name}: старт")
 
     def stop(self):
-        print("Машина остановилась")
+        print(f"{self.name}: стоп")
 
-    def turn(self, direction):
-        print(f"Машина поеврнула {direction}")
+    def turn(self, direction: str):
+        print(f"{self.name}: поворот - {direction}")
 
     def show_speed(self):
-        print(f"Скорость {self.speed}")
+        print(f"{self.name}: скорость = {self.speed} км/ч")
 
 
 class TownCar(Car):
     def show_speed(self):
+        super().show_speed()
         if self.speed > 60:
-            print(f"Скорость превышена")
-        else:
-            print(f"Скорость {self.speed}")
+            print(f"{self.name}: скорость превышена")
 
 
 class WorkCar(Car):
     def show_speed(self):
+        super().show_speed()
         if self.speed > 40:
-            print(f"Скорость превышена")
-        else:
-            print(f"Скорость {self.speed}")
+            print(f"{self.name}: скорость превышена")
 
 
 class PoliceCar(Car):
-    is_police = True
+    is_police: bool = True
 
 
 """Реализовать базовый класс Worker (работник), в котором определить атрибуты:
@@ -94,8 +63,9 @@ class Worker:
     name: str
     surname: str
     position: str
+    _income: dict
 
-    def __init__(self, name, surname, position, wage, bonus):
+    def __init__(self, name: str, surname: str, position: str, wage: int, bonus: int):
         self.name = name
         self.surname = surname
         self.position = position
@@ -105,17 +75,11 @@ class Worker:
 
 class Position(Worker):
     def get_full_name(self):
-        full_name = f"{self.name} {self.surname}"
-        return full_name
+        return f"{self.name} {self.surname}"
 
     def get_total_income(self):
-        income = sum(self._income.values())
-        return income
+        return sum(self._income.values())
 
-
-a = Position("name", "surname", "position", 150, 15)
-print(a.get_full_name())
-print(a.get_total_income())
 
 """Реализовать класс Road (дорога), в котором определить атрибуты: length (длина), width (ширина).
 Значения данных атрибутов должны передаваться при создании экземпляра класса. Атрибуты сделать защищенными.
@@ -125,20 +89,20 @@ print(a.get_total_income())
 
 
 class Road:
-    _length: int
-    _width: int
+    __mass: float = 25
+    _width: float
+    _length: float
 
-    def __init__(self, length, width):
-        self._length = length
+    def __init__(self, width: float, length: float):
         self._width = width
+        self._length = length
 
-    def asphalt_mass(self, mass_standard, thickness):
-        mass = self._length * self._width * mass_standard * thickness
-        return mass
+    def asphalt_mass(self, depth: float = 1):
+        return self._length * self._width * self.__mass * depth / 1000
 
 
 road = Road(20, 5000)
-print(road.asphalt_mass(25, 5))
+print(f"{road.asphalt_mass(5)} т")
 
 """Создать класс TrafficLight (светофор) и определить у него один атрибут color (цвет) и метод running (запуск).
 Атрибут реализовать как приватный.
@@ -153,28 +117,35 @@ import time
 
 
 class TrafficLight:
-    __color: str = ""
+    __color: str
+    __timing: dict
+    __next_idx: int = 0
 
-    def running(self):
-        start = time.time()
-        counter = time.time()
-        while counter + 15 > start:
-            switch_yellow = start + 7
-            switch_green = switch_yellow + 2
-            switch_red = switch_green + 5
-            if time.time() < switch_yellow and self.__color != "красный":
-                self.__color = "красный"
-                print("красный")
-            elif switch_yellow <= time.time() < switch_green and self.__color != "желтый":
-                self.__color = "желтый"
-                print("желтый")
-            elif switch_green <= time.time() < switch_red and self.__color != "зеленый":
-                self.__color = "зеленый"
-                print("зеленый")
-            elif time.time() >= switch_red:
-                start = time.time()
+    def __init__(self, red_time: int = 7, yellow_time: int = 2, green_time: int = 5):
+        self.__timing = {"красный": red_time, "желтый": yellow_time, "зеленый": green_time}
+
+    def running(self, color: str):
+        if list(self.__timing.keys()).index(color) != self.__next_idx:
+            print("Неправильный порядок сигналов")
+            exit()
+        self.__color = color
+        timer = self.__timing[color]
+        for second in range(timer):
+            print(f"{self} [{second + 1}]")
+            time.sleep(1)
+        next_idx = self.__next_idx + 1
+        self.__next_idx = next_idx if next_idx < len(self.__timing) else 0
+
+    def __repr__(self):
+        return f"текущий режим = {self.__color}"
 
 
-a = TrafficLight()
-a.running()
-print(time.time())
+try:
+    traffic_light = TrafficLight(3, 2, 3)
+    traffic_light.running("красный")
+    traffic_light.running("желтый")
+    traffic_light.running("зеленый")
+    traffic_light.running("красный")
+    traffic_light.running("зеленый")
+except KeyboardInterrupt:
+    print("Exit the program")
