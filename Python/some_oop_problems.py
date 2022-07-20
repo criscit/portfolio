@@ -1,3 +1,153 @@
+"""Реализовать программу работы с органическими клетками, состоящими из ячеек. Необходимо создать класс Клетка.
+В его конструкторе инициализировать параметр, соответствующий количеству ячеек клетки (целое число).
+В классе должны быть реализованы методы перегрузки арифметических операторов:
+сложение (add()), вычитание (sub()), умножение (mul()), деление (truediv()).
+Данные методы должны применяться только к клеткам и выполнять увеличение, уменьшение,
+умножение и целочисленное (с округлением до целого) деление клеток, соответственно.
+
+Сложение. Объединение двух клеток. При этом число ячеек общей клетки должно равняться сумме ячеек исходных двух клеток.
+Вычитание. Участвуют две клетки. Операцию необходимо выполнять только если
+разность количества ячеек двух клеток больше нуля, иначе выводить соответствующее сообщение.
+Умножение. Создается общая клетка из двух.
+Число ячеек общей клетки определяется как произведение количества ячеек этих двух клеток.
+Деление. Создается общая клетка из двух.
+Число ячеек общей клетки определяется как целочисленное деление количества ячеек этих двух клеток.
+В классе необходимо реализовать метод make_order(), принимающий экземпляр класса и количество ячеек в ряду.
+Данный метод позволяет организовать ячейки по рядам.
+Метод должен возвращать строку вида *****\n*****\n*****..., где количество ячеек между \n равно переданному аргументу.
+Если ячеек на формирование ряда не хватает, то в последний ряд записываются все оставшиеся."""
+
+
+class Cell:
+    __units: int
+
+    def __init__(self, units: int):
+        assert units > 0, "Количество ячеек должно быть больше 0"
+        self.__units = units
+
+    def __add__(self, other: 'Cell'):
+        self.validate_item(other)
+        total_units = self.units + other.units
+        return Cell(total_units)
+
+    def __sub__(self, other: 'Cell'):
+        self.validate_item(other)
+        total_units = self.units - other.units
+        assert total_units > 0, "Количество ячеек первой клетки меньше количества ячеек второй."
+        return Cell(total_units)
+
+    def __mul__(self, other: 'Cell'):
+        self.validate_item(other)
+        total_units = self.units * other.units
+        return Cell(total_units)
+
+    def __truediv__(self, other: 'Cell'):
+        self.validate_item(other)
+        total_units = self.units // other.units
+        return Cell(total_units)
+
+    def __str__(self):
+        return str(self.__units)
+
+    def validate_item(self, other):
+        assert isinstance(other, self.__class__), "Операции допустимы только между клетками"
+
+    @property
+    def units(self):
+        return self.__units
+
+    @staticmethod
+    def make_order(cell_object: 'Cell', units_per_row: int) -> str:
+        items = '*' * cell_object.units
+        chunks = [
+            items[idx:idx + units_per_row]
+            for idx in range(0, len(items), units_per_row)
+        ]
+        return "\n".join(chunks)
+
+
+"""Реализовать проект расчета суммарного расхода ткани на производство одежды.
+Основная сущность (класс) этого проекта — одежда, которая может иметь определенное название.
+К типам одежды в этом проекте относятся пальто и костюм. У этих типов одежды существуют параметры:
+размер (для пальто) и рост (для костюма). Это могут быть обычные числа: V и H, соответственно.
+Для определения расхода ткани по каждому типу одежды использовать формулы: для пальто (V/6.5 + 0.5),
+для костюма (2*H + 0.3). Проверить работу этих методов на реальных данных.
+Реализовать общий подсчет расхода ткани. Проверить на практике полученные на этом уроке знания:
+реализовать абстрактные классы для основных классов проекта, проверить на практике работу декоратора @property."""
+from abc import ABC, abstractmethod
+
+
+class Clothes(ABC):
+    name: str
+
+    def __init__(self, name: str):
+        self.name = name
+
+    @property
+    @abstractmethod
+    def calculate(self) -> float:
+        pass
+
+
+class Coat(Clothes):
+    _size: float
+
+    def __init__(self, size: float):
+        super().__init__(name="Пальто")
+        self._size = size
+
+    @property
+    def calculate(self) -> float:
+        return self._size / 6.5 + 0.5
+
+
+class Suit(Clothes):
+    _height: float
+
+    def __init__(self, height: float):
+        super().__init__(name="Костюм")
+        self._height = height
+
+    @property
+    def calculate(self) -> float:
+        return self._height * 2 + 0.3
+
+
+"""Реализовать класс Matrix (матрица). Обеспечить перегрузку конструктора класса (метод init()),
+который должен принимать данные (список списков) для формирования матрицы.
+Следующий шаг — реализовать перегрузку метода str() для вывода матрицы в привычном виде.
+Далее реализовать перегрузку метода add() для реализации операции сложения двух объектов класса Matrix (двух матриц).
+Результатом сложения должна быть новая матрица."""
+
+
+class Matrix:
+    value: list
+
+    def __init__(self, value: list):
+        self.value = value
+
+    def __str__(self):
+        return "\n".join(str(row).strip("[]").replace(",", "") for row in self.value)
+
+    def __add__(self, other: 'Matrix'):
+        try:
+            rows_count = len(self.value)
+            items_count = len(self.value[0])
+            if rows_count != len(other.value) or items_count != len(other.value[0]):
+                raise IndexError
+            new_value = [
+                [
+                    self.value[row][idx] + other.value[row][idx]
+                    for idx in range(items_count)
+                ]
+                for row in range(rows_count)
+            ]
+            return Matrix(new_value)
+        except IndexError:
+            print("Ошибка - Разные размерности матриц")
+            exit(1)
+
+
 """Реализуйте базовый класс Car. У данного класса должны быть следующие атрибуты:
 speed, color, name, is_police (булево). А также методы: go, stop, turn(direction),
 которые должны сообщать, что машина поехала, остановилась, повернула (куда).
